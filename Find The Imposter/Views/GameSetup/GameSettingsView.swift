@@ -97,7 +97,7 @@ struct GameSettingsView: View {
                 }
 
                 SecondaryButton("Back", icon: "arrow.left") {
-                    viewModel.goBackToPlayerSetup()
+                    viewModel.goBackFromSettings()
                 }
             }
             .padding(.horizontal, Constants.largePadding)

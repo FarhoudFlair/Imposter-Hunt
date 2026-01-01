@@ -27,6 +27,7 @@ class GameViewModel {
     var showPassPhoneScreen: Bool = true
     var showImposterReveal: Bool = false
     var showWordReveal: Bool = false
+    var cameFromEndGame: Bool = false
 
     // MARK: - Dependencies
 
@@ -262,7 +263,32 @@ class GameViewModel {
         // Keep same players, reassign roles
         showImposterReveal = false
         showWordReveal = false
+        cameFromEndGame = false
         beginRoleReveal()
+    }
+
+    func changeSettings() {
+        // Go to settings while keeping players
+        showImposterReveal = false
+        showWordReveal = false
+        cameFromEndGame = true
+        gamePhase = .gameSettings
+        audioService.play(.buttonTap)
+        hapticsService.lightTap()
+    }
+
+    func goBackFromSettings() {
+        if cameFromEndGame {
+            // Return to end game with reveals ready to show again
+            cameFromEndGame = false
+            gamePhase = .endGame
+            showImposterReveal = false
+            showWordReveal = false
+        } else {
+            gamePhase = .playerSetup
+        }
+        audioService.play(.buttonTap)
+        hapticsService.lightTap()
     }
 
     func returnHome() {
@@ -283,6 +309,7 @@ class GameViewModel {
         isCardFlipped = false
         showImposterReveal = false
         showWordReveal = false
+        cameFromEndGame = false
     }
 
     // MARK: - Settings Sync

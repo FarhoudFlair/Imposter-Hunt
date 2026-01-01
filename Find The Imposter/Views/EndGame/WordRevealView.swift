@@ -56,6 +56,10 @@ struct WordRevealView: View {
                     .font(.system(size: 42, weight: .black))
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.5)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 20)
                     .scaleEffect(wordScale)
 
                 if let category = viewModel.selectedCategory {

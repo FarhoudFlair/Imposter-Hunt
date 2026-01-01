@@ -157,6 +157,9 @@ struct RoleCardView: View {
                 .font(.system(size: 32, weight: .heavy))
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .minimumScaleFactor(0.6)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
                 .background(
@@ -267,6 +270,18 @@ struct RoleCardView: View {
         isImposter: false,
         word: "Elephant",
         categoryName: "Animals",
+        showHint: false
+    )
+    .frame(width: 280, height: 420)
+    .padding()
+    .background(Color.darkBackground)
+}
+
+#Preview("Non-Imposter Long Word") {
+    RoleCardView(
+        isImposter: false,
+        word: "Tyrannosaurus Rex",
+        categoryName: "Dinosaurs",
         showHint: false
     )
     .frame(width: 280, height: 420)

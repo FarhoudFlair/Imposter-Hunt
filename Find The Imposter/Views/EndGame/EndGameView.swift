@@ -40,6 +40,10 @@ struct EndGameView: View {
                         viewModel.playAgain()
                     }
 
+                    SecondaryButton("Change Settings", icon: "gearshape.fill") {
+                        viewModel.changeSettings()
+                    }
+
                     SecondaryButton("Home", icon: "house.fill") {
                         viewModel.returnHome()
                     }
