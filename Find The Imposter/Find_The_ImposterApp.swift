@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct Find_The_ImposterApp: App {
+    @State private var gameViewModel = GameViewModel()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(gameViewModel)
+                .preferredColorScheme(.dark)
         }
     }
 }

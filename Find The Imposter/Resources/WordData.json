@@ -1,0 +1,204 @@
+{
+  "categories": [
+    {
+      "id": "animals",
+      "name": "Animals",
+      "icon": "pawprint.fill",
+      "words": {
+        "kids": ["Dog", "Cat", "Bird", "Fish", "Rabbit", "Horse", "Cow", "Pig", "Duck", "Chicken", "Frog", "Bear", "Lion", "Tiger", "Elephant", "Monkey", "Snake", "Turtle", "Butterfly", "Bee", "Spider", "Ant", "Mouse", "Hamster", "Goldfish", "Parrot", "Owl", "Penguin", "Dolphin", "Shark"],
+        "medium": ["Flamingo", "Hedgehog", "Porcupine", "Armadillo", "Koala", "Kangaroo", "Platypus", "Peacock", "Toucan", "Pelican", "Seahorse", "Octopus", "Jellyfish", "Starfish", "Lobster", "Crab", "Scorpion", "Gecko", "Chameleon", "Iguana", "Crocodile", "Alligator", "Cheetah", "Leopard", "Jaguar", "Panther", "Gorilla", "Orangutan", "Chimpanzee", "Lemur"],
+        "hard": ["Axolotl", "Capybara", "Quokka", "Pangolin", "Narwhal", "Manatee", "Tapir", "Okapi", "Binturong", "Aye-aye", "Tarsier", "Dugong", "Numbat", "Echidna", "Wombat", "Cassowary", "Kiwi", "Kakapo", "Tuatara", "Gharial", "Komodo Dragon", "Thorny Devil", "Fossa", "Caracal", "Serval", "Ocelot", "Margay", "Clouded Leopard", "Sun Bear", "Sloth Bear"]
+      }
+    },
+    {
+      "id": "food",
+      "name": "Food & Drinks",
+      "icon": "fork.knife",
+      "words": {
+        "kids": ["Pizza", "Burger", "Hot Dog", "Sandwich", "Taco", "Ice Cream", "Cookie", "Cake", "Apple", "Banana", "Orange", "Grapes", "Strawberry", "Watermelon", "Carrot", "Broccoli", "Corn", "Potato", "Cheese", "Milk", "Juice", "Water", "Bread", "Pasta", "Rice", "Egg", "Chicken Nuggets", "French Fries", "Popcorn", "Candy"],
+        "medium": ["Sushi", "Ramen", "Pad Thai", "Curry", "Falafel", "Hummus", "Guacamole", "Quesadilla", "Burrito", "Enchilada", "Croissant", "Baguette", "Pretzel", "Bagel", "Muffin", "Pancake", "Waffle", "Omelette", "Avocado", "Mango", "Papaya", "Kiwi", "Pomegranate", "Artichoke", "Asparagus", "Zucchini", "Eggplant", "Tofu", "Quinoa", "Couscous"],
+        "hard": ["Bouillabaisse", "Ratatouille", "Beef Wellington", "Coq au Vin", "Osso Buco", "Carbonara", "Cacio e Pepe", "Gnocchi", "Risotto", "Paella", "Ceviche", "Tartare", "Carpaccio", "Prosciutto", "Bresaola", "Mortadella", "Gorgonzola", "Camembert", "Gruyere", "Manchego", "Durian", "Jackfruit", "Dragon Fruit", "Rambutan", "Lychee", "Persimmon", "Kumquat", "Tamarind", "Bok Choy", "Kohlrabi"]
+      }
+    },
+    {
+      "id": "sports",
+      "name": "Sports",
+      "icon": "sportscourt.fill",
+      "words": {
+        "kids": ["Soccer", "Basketball", "Baseball", "Football", "Tennis", "Swimming", "Running", "Jumping", "Skating", "Skiing", "Golf", "Bowling", "Volleyball", "Hockey", "Gymnastics", "Dancing", "Biking", "Surfing", "Skateboarding", "Karate", "Wrestling", "Boxing", "Fishing", "Hiking", "Camping", "Yoga", "Cheerleading", "Track", "Diving", "Horseback Riding"],
+        "medium": ["Lacrosse", "Rugby", "Cricket", "Badminton", "Squash", "Racquetball", "Handball", "Water Polo", "Rowing", "Kayaking", "Canoeing", "Sailing", "Windsurfing", "Snowboarding", "Cross-Country Skiing", "Figure Skating", "Speed Skating", "Curling", "Bobsled", "Luge", "Triathlon", "Decathlon", "Pentathlon", "Fencing", "Archery", "Shooting", "Weightlifting", "Powerlifting", "CrossFit", "Pilates"],
+        "hard": ["Jai Alai", "Sepak Takraw", "Kabaddi", "Hurling", "Gaelic Football", "Bandy", "Floorball", "Korfball", "Netball", "Petanque", "Bocce", "Croquet", "Polo", "Steeplechase", "Biathlon", "Nordic Combined", "Skeleton", "Modern Pentathlon", "Rhythmic Gymnastics", "Trampoline", "Sport Climbing", "Bouldering", "Parkour", "Orienteering", "Rogaining", "Ultra Marathon", "Ironman", "Caber Toss", "Stone Put", "Highland Games"]
+      }
+    },
+    {
+      "id": "movies",
+      "name": "Movies & TV",
+      "icon": "film.fill",
+      "words": {
+        "kids": ["Frozen", "Lion King", "Toy Story", "Finding Nemo", "Shrek", "Moana", "Encanto", "Coco", "Minions", "Despicable Me", "Kung Fu Panda", "Madagascar", "Ice Age", "Cars", "Monsters Inc", "Up", "WALL-E", "Brave", "Tangled", "Zootopia", "SpongeBob", "Paw Patrol", "Peppa Pig", "Bluey", "Pokemon", "Mario", "Sonic", "Spider-Man", "Batman", "Superman"],
+        "medium": ["Avengers", "Harry Potter", "Star Wars", "Lord of the Rings", "Jurassic Park", "Pirates of the Caribbean", "Transformers", "Mission Impossible", "Fast and Furious", "James Bond", "Indiana Jones", "Back to the Future", "Ghostbusters", "Men in Black", "The Matrix", "Inception", "Interstellar", "Avatar", "Titanic", "The Wizard of Oz", "E.T.", "Jaws", "Rocky", "Karate Kid", "Top Gun", "Grease", "Footloose", "Dirty Dancing", "The Notebook", "Twilight"],
+        "hard": ["Citizen Kane", "Casablanca", "Gone with the Wind", "Schindlers List", "The Godfather", "Pulp Fiction", "Fight Club", "Memento", "Mulholland Drive", "2001 A Space Odyssey", "Blade Runner", "Apocalypse Now", "Taxi Driver", "Raging Bull", "Goodfellas", "Scarface", "Heat", "The Departed", "No Country for Old Men", "There Will Be Blood", "Parasite", "Oldboy", "Seven Samurai", "Rashomon", "Spirited Away", "Princess Mononoke", "Akira", "Ghost in the Shell", "Metropolis", "Nosferatu"]
+      }
+    },
+    {
+      "id": "countries",
+      "name": "Countries & Places",
+      "icon": "globe.americas.fill",
+      "words": {
+        "kids": ["USA", "Canada", "Mexico", "Brazil", "France", "Italy", "Spain", "Germany", "England", "Ireland", "Japan", "China", "India", "Australia", "Egypt", "Africa", "Antarctica", "North Pole", "Beach", "Mountain", "Forest", "Desert", "Ocean", "Island", "City", "Farm", "Zoo", "Park", "School", "Hospital"],
+        "medium": ["Argentina", "Chile", "Peru", "Colombia", "Portugal", "Netherlands", "Belgium", "Switzerland", "Austria", "Greece", "Turkey", "Russia", "Ukraine", "Poland", "Sweden", "Norway", "Finland", "Denmark", "South Korea", "Thailand", "Vietnam", "Philippines", "Indonesia", "New Zealand", "South Africa", "Morocco", "Kenya", "Nigeria", "Iceland", "Greenland"],
+        "hard": ["Liechtenstein", "Andorra", "Monaco", "San Marino", "Vatican City", "Luxembourg", "Malta", "Cyprus", "Slovenia", "Slovakia", "Estonia", "Latvia", "Lithuania", "Belarus", "Moldova", "Georgia", "Armenia", "Azerbaijan", "Kazakhstan", "Uzbekistan", "Turkmenistan", "Tajikistan", "Kyrgyzstan", "Mongolia", "Bhutan", "Nepal", "Sri Lanka", "Myanmar", "Laos", "Cambodia"]
+      }
+    },
+    {
+      "id": "professions",
+      "name": "Jobs & Professions",
+      "icon": "briefcase.fill",
+      "words": {
+        "kids": ["Doctor", "Nurse", "Teacher", "Firefighter", "Police Officer", "Chef", "Farmer", "Pilot", "Astronaut", "Singer", "Actor", "Artist", "Writer", "Dancer", "Athlete", "Coach", "Vet", "Dentist", "Builder", "Driver", "Mailman", "Cashier", "Waiter", "Baker", "Lifeguard", "Zookeeper", "Magician", "Clown", "Princess", "Superhero"],
+        "medium": ["Surgeon", "Pharmacist", "Therapist", "Lawyer", "Judge", "Accountant", "Engineer", "Architect", "Scientist", "Professor", "Journalist", "Photographer", "Designer", "Programmer", "Electrician", "Plumber", "Mechanic", "Carpenter", "Locksmith", "Optometrist", "Chiropractor", "Paramedic", "Dispatcher", "Detective", "Security Guard", "Flight Attendant", "Tour Guide", "Translator", "Librarian", "Curator"],
+        "hard": ["Anesthesiologist", "Radiologist", "Epidemiologist", "Actuary", "Underwriter", "Broker", "Auditor", "Paralegal", "Bailiff", "Coroner", "Pathologist", "Toxicologist", "Entomologist", "Botanist", "Geologist", "Meteorologist", "Oceanographer", "Cartographer", "Archivist", "Etymologist", "Philologist", "Dramaturge", "Gaffer", "Foley Artist", "Sommelier", "Barista", "Concierge", "Maitre D", "Ombudsman", "Docent"]
+      }
+    },
+    {
+      "id": "household",
+      "name": "Household Items",
+      "icon": "house.fill",
+      "words": {
+        "kids": ["Chair", "Table", "Bed", "Couch", "Lamp", "TV", "Phone", "Computer", "Clock", "Mirror", "Door", "Window", "Stairs", "Floor", "Ceiling", "Wall", "Roof", "Toilet", "Sink", "Bathtub", "Shower", "Towel", "Soap", "Toothbrush", "Blanket", "Pillow", "Rug", "Curtain", "Vase", "Picture Frame"],
+        "medium": ["Ottoman", "Recliner", "Loveseat", "Futon", "Nightstand", "Dresser", "Armoire", "Credenza", "Hutch", "Bookshelf", "Filing Cabinet", "Desk Lamp", "Chandelier", "Sconce", "Ceiling Fan", "Thermostat", "Smoke Detector", "Doorbell", "Deadbolt", "Venetian Blinds", "Valance", "Duvet", "Comforter", "Mattress Pad", "Box Spring", "Headboard", "Footboard", "Vanity", "Medicine Cabinet", "Bidet"],
+        "hard": ["Chaise Lounge", "Bergere", "Wingback Chair", "Tufted Ottoman", "Parsons Table", "Pedestal Table", "Highboy", "Lowboy", "Chifforobe", "Etagere", "Breakfront", "Secretaire", "Escritoire", "Torchiere", "Girandole", "Candelabra", "Epergne", "Jardiniere", "Cachepot", "Antimacassar", "Doily", "Runner", "Bolster", "Sham", "Dust Ruffle", "Finial", "Newel Post", "Balustrade", "Wainscoting", "Crown Molding"]
+      }
+    },
+    {
+      "id": "nature",
+      "name": "Nature & Weather",
+      "icon": "leaf.fill",
+      "words": {
+        "kids": ["Sun", "Moon", "Star", "Cloud", "Rain", "Snow", "Wind", "Rainbow", "Thunder", "Lightning", "Tree", "Flower", "Grass", "Rock", "Mountain", "River", "Lake", "Ocean", "Beach", "Island", "Forest", "Jungle", "Desert", "Cave", "Volcano", "Waterfall", "Pond", "Stream", "Hill", "Valley"],
+        "medium": ["Tornado", "Hurricane", "Tsunami", "Earthquake", "Blizzard", "Hailstorm", "Drought", "Flood", "Fog", "Mist", "Dew", "Frost", "Glacier", "Iceberg", "Geyser", "Hot Spring", "Coral Reef", "Mangrove", "Swamp", "Marsh", "Meadow", "Prairie", "Tundra", "Taiga", "Savanna", "Canyon", "Plateau", "Basin", "Peninsula", "Archipelago"],
+        "hard": ["Haboob", "Derecho", "Waterspout", "Fire Whirl", "Ball Lightning", "St Elmos Fire", "Aurora Borealis", "Bioluminescence", "Permafrost", "Moraine", "Esker", "Drumlin", "Fjord", "Atoll", "Seamount", "Abyssal Plain", "Hydrothermal Vent", "Fumarole", "Maar", "Caldera", "Cirque", "Arete", "Nunatak", "Inselberg", "Butte", "Mesa", "Hoodoo", "Karst", "Cenote", "Sinkhole"]
+      }
+    },
+    {
+      "id": "transportation",
+      "name": "Transportation",
+      "icon": "car.fill",
+      "words": {
+        "kids": ["Car", "Bus", "Train", "Plane", "Boat", "Bike", "Motorcycle", "Truck", "Van", "Taxi", "Ambulance", "Fire Truck", "Police Car", "Helicopter", "Rocket", "Submarine", "Skateboard", "Scooter", "Wagon", "Sled", "Hot Air Balloon", "Tractor", "Bulldozer", "Crane", "Dump Truck", "Garbage Truck", "Ice Cream Truck", "School Bus", "Limousine", "RV"],
+        "medium": ["Sedan", "Coupe", "Convertible", "SUV", "Minivan", "Pickup Truck", "Semi Truck", "Tanker", "Freight Train", "Passenger Train", "Subway", "Trolley", "Monorail", "Cable Car", "Gondola", "Ferry", "Cruise Ship", "Yacht", "Sailboat", "Kayak", "Canoe", "Jet Ski", "Hovercraft", "Blimp", "Glider", "Hang Glider", "Paraglider", "Segway", "Hoverboard", "Electric Scooter"],
+        "hard": ["Velocipede", "Penny Farthing", "Rickshaw", "Tuk Tuk", "Pedicab", "Jitney", "Omnibus", "Stagecoach", "Barouche", "Landau", "Phaeton", "Cabriolet", "Brougham", "Hansom Cab", "Droshky", "Troika", "Palanquin", "Sedan Chair", "Dhow", "Junk", "Sampan", "Proa", "Catamaran", "Trimaran", "Hydrofoil", "Ekranoplan", "Autogyro", "Ornithopter", "Maglev", "Hyperloop"]
+      }
+    },
+    {
+      "id": "music",
+      "name": "Music",
+      "icon": "music.note",
+      "words": {
+        "kids": ["Guitar", "Piano", "Drums", "Violin", "Flute", "Trumpet", "Microphone", "Speaker", "Headphones", "Radio", "Song", "Dance", "Singer", "Band", "Concert", "DJ", "Rap", "Rock", "Pop", "Jazz", "Lullaby", "Clapping", "Singing", "Humming", "Whistling", "Tambourine", "Xylophone", "Triangle", "Maracas", "Kazoo"],
+        "medium": ["Saxophone", "Clarinet", "Oboe", "Bassoon", "Trombone", "Tuba", "French Horn", "Cello", "Viola", "Double Bass", "Harp", "Banjo", "Ukulele", "Mandolin", "Accordion", "Harmonica", "Synthesizer", "Keyboard", "Organ", "Bagpipes", "Sitar", "Tabla", "Bongos", "Conga", "Snare Drum", "Hi Hat", "Cymbal", "Gong", "Cowbell", "Castanets"],
+        "hard": ["Theremin", "Mellotron", "Ondes Martenot", "Hurdy Gurdy", "Oud", "Shamisen", "Koto", "Erhu", "Pipa", "Guzheng", "Balalaika", "Bouzouki", "Charango", "Berimbau", "Didgeridoo", "Mbira", "Kalimba", "Gamelan", "Steelpan", "Hang Drum", "Vibraphone", "Marimba", "Celesta", "Glockenspiel", "Tubular Bells", "Waterphone", "Glass Harmonica", "Singing Bowl", "Ocarina", "Recorder"]
+      }
+    },
+    {
+      "id": "technology",
+      "name": "Technology",
+      "icon": "desktopcomputer",
+      "words": {
+        "kids": ["Phone", "Computer", "Tablet", "TV", "Camera", "Video Game", "Robot", "Internet", "Email", "Website", "App", "Password", "Charging", "WiFi", "Bluetooth", "Screenshot", "Selfie", "Video Call", "Texting", "Download", "Upload", "Mouse", "Keyboard", "Screen", "Printer", "Headphones", "Speaker", "Remote Control", "Battery", "Charger"],
+        "medium": ["Smartphone", "Laptop", "Desktop", "Monitor", "Hard Drive", "SSD", "RAM", "CPU", "GPU", "Motherboard", "Router", "Modem", "Ethernet", "USB", "HDMI", "Bluetooth Speaker", "Smart Watch", "Fitness Tracker", "Drone", "3D Printer", "VR Headset", "Streaming", "Cloud Storage", "Backup", "Encryption", "Firewall", "Antivirus", "Software Update", "Operating System", "Browser"],
+        "hard": ["Quantum Computer", "Neural Network", "Machine Learning", "Blockchain", "Cryptocurrency", "NFT", "Metaverse", "Augmented Reality", "Mixed Reality", "Edge Computing", "IoT", "5G", "Fiber Optic", "Microcontroller", "FPGA", "ASIC", "Raspberry Pi", "Arduino", "API", "SDK", "Algorithm", "Data Structure", "Binary", "Hexadecimal", "Compiler", "Debugger", "Repository", "Version Control", "Containerization", "Virtualization"]
+      }
+    },
+    {
+      "id": "clothing",
+      "name": "Clothing & Fashion",
+      "icon": "tshirt.fill",
+      "words": {
+        "kids": ["Shirt", "Pants", "Dress", "Skirt", "Shorts", "Jacket", "Coat", "Sweater", "Socks", "Shoes", "Boots", "Sandals", "Hat", "Cap", "Gloves", "Scarf", "Belt", "Tie", "Underwear", "Pajamas", "Swimsuit", "Costume", "Uniform", "Jeans", "T-Shirt", "Hoodie", "Sneakers", "Slippers", "Raincoat", "Sunglasses"],
+        "medium": ["Blouse", "Cardigan", "Blazer", "Vest", "Polo", "Tank Top", "Leggings", "Capris", "Khakis", "Chinos", "Overalls", "Jumpsuit", "Romper", "Maxi Dress", "Mini Skirt", "Pencil Skirt", "Tunic", "Poncho", "Parka", "Windbreaker", "Peacoat", "Trench Coat", "Loafers", "Oxfords", "Heels", "Wedges", "Flip Flops", "Beanie", "Fedora", "Beret"],
+        "hard": ["Cravat", "Ascot", "Cummerbund", "Suspenders", "Garters", "Corset", "Bustier", "Chemise", "Camisole", "Negligee", "Peignoir", "Kaftan", "Dashiki", "Kurta", "Sari", "Kimono", "Hanbok", "Dirndl", "Lederhosen", "Kilt", "Sarong", "Dhoti", "Jodhpurs", "Culottes", "Palazzo Pants", "Harem Pants", "Espadrilles", "Brogues", "Ghillie", "Moccasin"]
+      }
+    },
+    {
+      "id": "school",
+      "name": "School & Education",
+      "icon": "book.fill",
+      "words": {
+        "kids": ["School", "Teacher", "Student", "Classroom", "Desk", "Chair", "Blackboard", "Chalk", "Pencil", "Pen", "Paper", "Book", "Notebook", "Backpack", "Lunch Box", "Recess", "Playground", "Homework", "Test", "Grade", "Math", "Reading", "Writing", "Science", "Art", "Music", "Gym", "Library", "Principal", "Bus"],
+        "medium": ["Curriculum", "Syllabus", "Semester", "Quarter", "Midterm", "Final Exam", "Report Card", "GPA", "Honor Roll", "Detention", "Suspension", "Scholarship", "Tuition", "Campus", "Dormitory", "Cafeteria", "Auditorium", "Laboratory", "Gymnasium", "Locker", "Textbook", "Workbook", "Assignment", "Essay", "Presentation", "Project", "Research", "Bibliography", "Plagiarism", "Valedictorian"],
+        "hard": ["Pedagogy", "Andragogy", "Heuristics", "Epistemology", "Taxonomy", "Rubric", "Matriculation", "Accreditation", "Tenure", "Sabbatical", "Dissertation", "Thesis", "Postdoctoral", "Emeritus", "Provost", "Registrar", "Bursar", "Ombudsman", "Prerequisite", "Corequisite", "Elective", "Audit", "Transcript", "Commencement", "Convocation", "Magna Cum Laude", "Summa Cum Laude", "Phi Beta Kappa", "Rhodes Scholar", "Fulbright"]
+      }
+    },
+    {
+      "id": "bodyparts",
+      "name": "Body Parts",
+      "icon": "figure.stand",
+      "words": {
+        "kids": ["Head", "Hair", "Face", "Eye", "Ear", "Nose", "Mouth", "Teeth", "Tongue", "Chin", "Neck", "Shoulder", "Arm", "Elbow", "Wrist", "Hand", "Finger", "Thumb", "Chest", "Stomach", "Back", "Hip", "Leg", "Knee", "Ankle", "Foot", "Toe", "Heel", "Skin", "Bone"],
+        "medium": ["Forehead", "Eyebrow", "Eyelash", "Eyelid", "Pupil", "Nostril", "Cheek", "Jaw", "Temple", "Collarbone", "Bicep", "Tricep", "Forearm", "Palm", "Knuckle", "Fingernail", "Ribcage", "Spine", "Pelvis", "Thigh", "Calf", "Shin", "Achilles", "Arch", "Toenail", "Muscle", "Joint", "Tendon", "Ligament", "Cartilage"],
+        "hard": ["Phalanges", "Metacarpals", "Carpals", "Radius", "Ulna", "Humerus", "Scapula", "Clavicle", "Sternum", "Vertebrae", "Sacrum", "Coccyx", "Femur", "Patella", "Tibia", "Fibula", "Tarsals", "Metatarsals", "Mandible", "Maxilla", "Zygomatic", "Temporal", "Parietal", "Occipital", "Frontal", "Sphenoid", "Ethmoid", "Deltoid", "Trapezius", "Latissimus Dorsi"]
+      }
+    },
+    {
+      "id": "hobbies",
+      "name": "Hobbies & Activities",
+      "icon": "paintbrush.fill",
+      "words": {
+        "kids": ["Drawing", "Painting", "Coloring", "Reading", "Writing", "Singing", "Dancing", "Playing", "Running", "Jumping", "Swimming", "Biking", "Skating", "Building", "Cooking", "Baking", "Gardening", "Fishing", "Camping", "Hiking", "Collecting", "Puzzles", "Board Games", "Video Games", "Movies", "TV", "Music", "Crafts", "Legos", "Dolls"],
+        "medium": ["Photography", "Pottery", "Sculpting", "Knitting", "Crocheting", "Sewing", "Embroidery", "Quilting", "Scrapbooking", "Calligraphy", "Origami", "Woodworking", "Metalworking", "Jewelry Making", "Candle Making", "Soap Making", "Wine Tasting", "Brewing", "Fermenting", "Foraging", "Bird Watching", "Stargazing", "Geocaching", "Metal Detecting", "Antiquing", "Restoring", "Blogging", "Podcasting", "Streaming", "Cosplay"],
+        "hard": ["Philately", "Numismatics", "Lepidopterology", "Mycology", "Spelunking", "Orienteering", "Falconry", "Beekeeping", "Aquascaping", "Bonsai", "Ikebana", "Kintsugi", "Pyrography", "Lapidary", "Taxidermy", "Bookbinding", "Letterpress", "Glassblowing", "Blacksmithing", "Wheelwrighting", "Cooperage", "Thatching", "Wattle and Daub", "Raku", "Encaustic", "Batik", "Macrame", "Tatting", "Bobbin Lace", "Filigree"]
+      }
+    },
+    {
+      "id": "emotions",
+      "name": "Emotions & Feelings",
+      "icon": "face.smiling.fill",
+      "words": {
+        "kids": ["Happy", "Sad", "Angry", "Scared", "Surprised", "Excited", "Tired", "Hungry", "Silly", "Brave", "Shy", "Proud", "Jealous", "Lonely", "Confused", "Curious", "Grateful", "Sorry", "Love", "Hate", "Worried", "Nervous", "Calm", "Bored", "Frustrated", "Embarrassed", "Hopeful", "Disappointed", "Amazed", "Grumpy"],
+        "medium": ["Anxious", "Nostalgic", "Melancholy", "Euphoric", "Content", "Apathetic", "Overwhelmed", "Vulnerable", "Resentful", "Skeptical", "Optimistic", "Pessimistic", "Ambivalent", "Contemplative", "Pensive", "Wistful", "Serene", "Agitated", "Exasperated", "Mortified", "Indignant", "Bewildered", "Dismayed", "Elated", "Ecstatic", "Devastated", "Apprehensive", "Remorseful", "Vindictive", "Empathetic"],
+        "hard": ["Schadenfreude", "Weltschmerz", "Sehnsucht", "Hiraeth", "Saudade", "Hygge", "Gemutlichkeit", "Ennui", "Malaise", "Angst", "Anomie", "Acedia", "Hubris", "Nemesis", "Catharsis", "Sublime", "Ineffable", "Numinous", "Liminal", "Uncanny", "Cognitive Dissonance", "Imposter Syndrome", "Flow State", "Peak Experience", "Dark Night of Soul", "Existential Crisis", "Quarterlife Crisis", "Midlife Crisis", "Empty Nest", "Wanderlust"]
+      }
+    },
+    {
+      "id": "fairytales",
+      "name": "Fairytales & Fantasy",
+      "icon": "wand.and.stars",
+      "words": {
+        "kids": ["Princess", "Prince", "King", "Queen", "Castle", "Dragon", "Unicorn", "Fairy", "Wizard", "Witch", "Magic", "Wand", "Crown", "Throne", "Knight", "Sword", "Shield", "Treasure", "Giant", "Monster", "Ghost", "Mermaid", "Elf", "Troll", "Goblin", "Gnome", "Pixie", "Leprechaun", "Rainbow", "Spell"],
+        "medium": ["Enchantress", "Sorcerer", "Warlock", "Necromancer", "Alchemist", "Centaur", "Minotaur", "Phoenix", "Griffin", "Pegasus", "Hydra", "Chimera", "Sphinx", "Cyclops", "Medusa", "Siren", "Banshee", "Vampire", "Werewolf", "Zombie", "Golem", "Djinn", "Nymph", "Dryad", "Satyr", "Kraken", "Leviathan", "Basilisk", "Manticore", "Cerberus"],
+        "hard": ["Ifrit", "Marid", "Shaitan", "Rakshasa", "Asura", "Deva", "Yaksha", "Kitsune", "Tengu", "Oni", "Jorogumo", "Kappa", "Tanuki", "Selkie", "Kelpie", "Pooka", "Changeling", "Redcap", "Boggart", "Brownie", "Kobold", "Nixie", "Undine", "Sylph", "Salamander", "Homunculus", "Tulpa", "Egregore", "Thoughtform", "Familiar"]
+      }
+    },
+    {
+      "id": "superheroes",
+      "name": "Superheroes & Villains",
+      "icon": "bolt.fill",
+      "words": {
+        "kids": ["Spider-Man", "Batman", "Superman", "Wonder Woman", "Iron Man", "Hulk", "Thor", "Captain America", "Black Panther", "Aquaman", "Flash", "Robin", "Batgirl", "Supergirl", "Catwoman", "Joker", "Thanos", "Venom", "Green Goblin", "Power Rangers", "Teenage Mutant Ninja Turtles", "Incredibles", "Elastigirl", "Frozone", "Big Hero 6", "Captain Marvel", "Shazam", "Blue Beetle", "Static Shock", "Kim Possible"],
+        "medium": ["Wolverine", "Storm", "Cyclops", "Jean Grey", "Professor X", "Magneto", "Mystique", "Deadpool", "Black Widow", "Hawkeye", "Scarlet Witch", "Vision", "Ant-Man", "Wasp", "Doctor Strange", "Loki", "Green Lantern", "Martian Manhunter", "Cyborg", "Raven", "Starfire", "Beast Boy", "Nightwing", "Red Hood", "Harley Quinn", "Poison Ivy", "Mr Freeze", "Riddler", "Two Face", "Penguin"],
+        "hard": ["Mister Mxyzptlk", "Darkseid", "Brainiac", "Doomsday", "Parallax", "Anti Monitor", "Trigon", "Deathstroke", "Ras al Ghul", "Galactus", "Apocalypse", "Kang", "Ultron", "Mephisto", "Dormammu", "Shuma Gorath", "Molecule Man", "Beyonder", "Living Tribunal", "Eternity", "Infinity", "Oblivion", "Death", "Watcher", "Celestials", "Eternals", "Inhumans", "Skrulls", "Kree", "Shi'ar"]
+      }
+    },
+    {
+      "id": "space",
+      "name": "Space & Astronomy",
+      "icon": "moon.stars.fill",
+      "words": {
+        "kids": ["Sun", "Moon", "Star", "Planet", "Earth", "Mars", "Space", "Rocket", "Astronaut", "Alien", "UFO", "Meteor", "Comet", "Galaxy", "Telescope", "Satellite", "Moon Landing", "Space Station", "Spaceship", "Crater", "Eclipse", "Orbit", "Gravity", "Big Dipper", "Milky Way", "Shooting Star", "North Star", "Full Moon", "Solar System", "Night Sky"],
+        "medium": ["Mercury", "Venus", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "Asteroid", "Asteroid Belt", "Kuiper Belt", "Nebula", "Black Hole", "White Dwarf", "Red Giant", "Supernova", "Pulsar", "Quasar", "Dark Matter", "Dark Energy", "Light Year", "Parsec", "Constellation", "Zodiac", "Equinox", "Solstice", "Aurora", "Magnetosphere", "Exoplanet", "Habitable Zone", "Cosmic Ray"],
+        "hard": ["Magnetar", "Neutron Star", "Binary Star", "Cepheid Variable", "Chandrasekhar Limit", "Schwarzschild Radius", "Event Horizon", "Singularity", "Hawking Radiation", "Accretion Disk", "Gravitational Lensing", "Redshift", "Blueshift", "Doppler Effect", "Olbers Paradox", "Fermi Paradox", "Drake Equation", "Kardashev Scale", "Dyson Sphere", "Von Neumann Probe", "Alcubierre Drive", "Wormhole", "Multiverse", "Cosmic Inflation", "Cosmic Microwave Background", "Baryon", "Lepton", "Boson", "Fermion", "Antimatter"]
+      }
+    },
+    {
+      "id": "holidays",
+      "name": "Holidays & Celebrations",
+      "icon": "gift.fill",
+      "words": {
+        "kids": ["Christmas", "Halloween", "Easter", "Thanksgiving", "Birthday", "Valentine Day", "New Year", "Fourth of July", "St Patrick Day", "Mother Day", "Father Day", "Party", "Presents", "Cake", "Candles", "Balloons", "Decorations", "Costume", "Trick or Treat", "Santa Claus", "Easter Bunny", "Fireworks", "Parade", "Candy", "Cards", "Turkey", "Pumpkin", "Tree", "Ornaments", "Stockings"],
+        "medium": ["Hanukkah", "Kwanzaa", "Diwali", "Chinese New Year", "Cinco de Mayo", "Mardi Gras", "Carnival", "Oktoberfest", "Day of Dead", "Ramadan", "Eid", "Passover", "Rosh Hashanah", "Yom Kippur", "Memorial Day", "Veterans Day", "Labor Day", "Martin Luther King Day", "Presidents Day", "Columbus Day", "Groundhog Day", "Arbor Day", "Earth Day", "Pride Month", "Black Friday", "Cyber Monday", "Boxing Day", "Winter Solstice", "Summer Solstice", "Leap Year"],
+        "hard": ["Saturnalia", "Lupercalia", "Beltane", "Samhain", "Imbolc", "Lughnasadh", "Walpurgis Night", "Guy Fawkes Night", "Burns Night", "Bastille Day", "Nowruz", "Songkran", "Holi", "Vesak", "Bodhi Day", "Lohri", "Pongal", "Obon", "Chuseok", "Mid Autumn Festival", "Dragon Boat Festival", "Qingming", "Tanabata", "Sukkot", "Shavuot", "Purim", "Simchat Torah", "Tu BiShvat", "Lag BaOmer", "Tisha BAv"]
+      }
+    }
+  ]
+}
