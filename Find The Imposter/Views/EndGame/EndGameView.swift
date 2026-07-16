@@ -62,10 +62,15 @@ struct EndGameView: View {
 
 /// Initial state before any reveals
 struct ReadyToRevealView: View {
+    @Environment(GameViewModel.self) private var viewModel
     let onReveal: () -> Void
 
     @State private var hasAppeared = false
     @State private var pulseScale: CGFloat = 1.0
+
+    private var multipleImposters: Bool {
+        viewModel.imposters.count > 1
+    }
 
     var body: some View {
         VStack(spacing: 32) {
@@ -104,7 +109,9 @@ struct ReadyToRevealView: View {
                     .font(.system(size: 36, weight: .bold))
                     .foregroundStyle(.white)
 
-                Text("Ready to see who the imposter was?")
+                Text(multipleImposters
+                     ? "Ready to see who the imposters were?"
+                     : "Ready to see who the imposter was?")
                     .font(.title3)
                     .foregroundStyle(.white.opacity(0.7))
                     .multilineTextAlignment(.center)
@@ -113,7 +120,10 @@ struct ReadyToRevealView: View {
             .offset(y: hasAppeared ? 0 : 20)
 
             // Reveal Button
-            PrimaryButton("Reveal Imposter", icon: "eye.fill") {
+            PrimaryButton(
+                multipleImposters ? "Reveal Imposters" : "Reveal Imposter",
+                icon: "eye.fill"
+            ) {
                 onReveal()
             }
             .padding(.horizontal, 40)

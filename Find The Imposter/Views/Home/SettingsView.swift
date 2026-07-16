@@ -11,6 +11,16 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(GameViewModel.self) private var viewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var showCustomWords = false
+
+    private var customWordsSubtitle: String {
+        let count = viewModel.customWordService.wordCount
+        if count == 0 {
+            return "Add your own words"
+        } else {
+            return "\(count) word\(count == 1 ? "" : "s") added"
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -45,12 +55,96 @@ struct SettingsView: View {
                             )
                         )
 
+                        // Divider
+                        Rectangle()
+                            .fill(.white.opacity(0.1))
+                            .frame(height: 1)
+                            .padding(.vertical, 8)
+
+                        // Show Tutorial Again
+                        Button {
+                            viewModel.settings.hasSeenOnboarding = false
+                            viewModel.hapticsService.lightTap()
+                            dismiss()
+                        } label: {
+                            HStack(spacing: 16) {
+                                Image(systemName: "book.pages")
+                                    .font(.title2)
+                                    .foregroundStyle(.blue)
+                                    .frame(width: 44, height: 44)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(Color.blue.opacity(0.15))
+                                    )
+
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("Show Tutorial Again")
+                                        .font(.headline)
+                                        .foregroundStyle(.white)
+
+                                    Text("Review the app features")
+                                        .font(.caption)
+                                        .foregroundStyle(.white.opacity(0.5))
+                                }
+
+                                Spacer()
+
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                                    .foregroundStyle(.white.opacity(0.3))
+                            }
+                            .padding(16)
+                            .background(
+                                RoundedRectangle(cornerRadius: Constants.cornerRadius)
+                                    .fill(Color.elevatedBackground)
+                            )
+                        }
+                        .buttonStyle(.bounce)
+
+                        // Custom Words
+                        Button {
+                            showCustomWords = true
+                        } label: {
+                            HStack(spacing: 16) {
+                                Image(systemName: "heart.text.square")
+                                    .font(.title2)
+                                    .foregroundStyle(.pink)
+                                    .frame(width: 44, height: 44)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(Color.pink.opacity(0.15))
+                                    )
+
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("Custom Words")
+                                        .font(.headline)
+                                        .foregroundStyle(.white)
+
+                                    Text(customWordsSubtitle)
+                                        .font(.caption)
+                                        .foregroundStyle(.white.opacity(0.5))
+                                }
+
+                                Spacer()
+
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                                    .foregroundStyle(.white.opacity(0.3))
+                            }
+                            .padding(16)
+                            .background(
+                                RoundedRectangle(cornerRadius: Constants.cornerRadius)
+                                    .fill(Color.elevatedBackground)
+                            )
+                        }
+                        .buttonStyle(.bounce)
+
                         Spacer()
                             .frame(height: 20)
 
                         // App Info
                         VStack(spacing: 8) {
-                            Text("Find The Imposter")
+                            Text("Imposter Hunt")
                                 .font(.headline)
                                 .foregroundStyle(.white.opacity(0.6))
 
@@ -76,8 +170,11 @@ struct SettingsView: View {
             .toolbarBackground(Color.darkBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
-        .presentationDetents([.medium])
+        .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
+        .sheet(isPresented: $showCustomWords) {
+            CustomWordsView()
+        }
     }
 }
 

@@ -16,7 +16,7 @@ afconvert input.wav -o output.m4a -f m4af -d aac -b 128000
 
 ### MVVM with Environment Injection
 - **Single ViewModel:** `GameViewModel` manages all game state, injected via `.environment()` at app root
-- **Services:** `AudioService`, `HapticsService`, `WordDataService` - instantiated within GameViewModel
+- **Services:** `AudioService`, `HapticsService`, `WordDataService`, `CustomWordService` - instantiated within GameViewModel
 - **Game phases:** Controlled by `GamePhase` enum, navigation handled in `ContentView`
 
 ### Critical: SwiftUI Reactivity with UserDefaults
@@ -38,7 +38,8 @@ var selectedDifficulties: Set<Difficulty> {
 | File | Purpose |
 |------|---------|
 | `GameViewModel.swift` | Central state: players, roles, word selection, phase transitions |
-| `GameSettings.swift` | Persisted settings with in-memory backing + HintMode enum |
+| `GameSettings.swift` | Persisted settings with in-memory backing + HintMode enum + hasSeenOnboarding |
+| `CustomWordService.swift` | User-created words with UserDefaults persistence |
 | `FlippableCardView.swift` | Gesture-controlled 3D card flip animation |
 | `WordDataService.swift` | Loads `WordData.json`, random word selection by category/difficulty |
 
@@ -58,3 +59,39 @@ enum HintMode { case off, always, onlyIfStarts }
 - `effectiveRotation = rotation + abs(dragTranslation) * sensitivity`
 - Commits flip when past 90° threshold
 - Uses `rotation3DEffect` on y-axis
+
+### Data Models
+
+#### Category Struct
+`Category` uses a **dictionary** for words, NOT separate properties:
+```swift
+struct Category: Identifiable, Hashable, Codable {
+    let id: String
+    let name: String
+    let icon: String
+    let words: [String: [String]]  // difficulty key -> word array
+}
+
+// Creating a Category:
+Category(id: "custom", name: "My Words", icon: "heart", words: [:])
+
+// Accessing words:
+category.words(for: .medium)  // Returns [String]
+```
+
+#### Custom Words System
+- `CustomWord` model: word + difficulty + UUID
+- `CustomWordService`: UserDefaults persistence, in-memory backing (same pattern as GameSettings)
+- Custom category uses special ID `"custom"` in `CategoryPickerView` and `GameViewModel`
+- Words are mixed into the general word pool when "My Words" category is selected
+
+### Onboarding System
+- `hasSeenOnboarding` in `GameSettings` (UserDefaults persisted)
+- `OnboardingView` presented via `.fullScreenCover` in `ContentView`
+- Reset via Settings → "Show Tutorial Again"
+
+### View Components Pattern
+Reusable UI elements in `Views/Components/`:
+- `PrimaryButton`, `SecondaryButton` - Gradient buttons with bounce animation
+- `AnimatedBackground` - Floating gradient orbs
+- `BouncyModifier` - `.bouncyEntrance()`, `.staggeredAnimation()`, `.slideUp()` modifiers

@@ -35,6 +35,7 @@ class GameViewModel {
     let wordDataService: WordDataService
     let audioService: AudioService
     let hapticsService: HapticsService
+    let customWordService: CustomWordService
 
     // MARK: - Initialization
 
@@ -43,6 +44,7 @@ class GameViewModel {
         self.wordDataService = WordDataService()
         self.audioService = AudioService()
         self.hapticsService = HapticsService()
+        self.customWordService = CustomWordService()
 
         // Sync service states with settings
         audioService.isEnabled = settings.soundEnabled
@@ -100,21 +102,35 @@ class GameViewModel {
 
     /// Returns true if game can start (has valid difficulty and category selections with available words)
     var canStartGame: Bool {
-        // Must have at least one difficulty selected
-        guard !settings.selectedDifficulties.isEmpty else { return false }
-
-        // Must have at least one category selected
-        guard !settings.selectedCategoryIds.isEmpty else { return false }
-
-        return wordDataService.totalWordCount(
-            categoryIds: settings.selectedCategoryIds,
-            difficulties: settings.selectedDifficulties
-        ) > 0
+        availableWordCount() > 0
     }
 
     /// Deprecated: Use canStartGame instead
     var hasValidCategorySelection: Bool {
         canStartGame
+    }
+
+    /// Total words available for the current category + difficulty selection (includes My Words)
+    func availableWordCount() -> Int {
+        guard !settings.selectedDifficulties.isEmpty else { return 0 }
+        guard !settings.selectedCategoryIds.isEmpty else { return 0 }
+
+        let customId = CustomWordService.customCategoryId
+        let regularCategoryIds = settings.selectedCategoryIds.filter { $0 != customId }
+
+        var count = 0
+        if !regularCategoryIds.isEmpty {
+            count += wordDataService.totalWordCount(
+                categoryIds: regularCategoryIds,
+                difficulties: settings.selectedDifficulties
+            )
+        }
+
+        if settings.selectedCategoryIds.contains(customId) {
+            count += customWordService.wordStrings(for: settings.selectedDifficulties).count
+        }
+
+        return count
     }
 
     // MARK: - Player Management
@@ -151,7 +167,7 @@ class GameViewModel {
     }
 
     func proceedToSettings() {
-        guard canStartGame else { return }
+        guard canProceedToGameSettings else { return }
         gamePhase = .gameSettings
         audioService.play(.buttonTap)
         hapticsService.lightTap()
@@ -164,7 +180,19 @@ class GameViewModel {
     }
 
     func beginRoleReveal() {
+        guard canStartGame else {
+            hapticsService.warning()
+            return
+        }
+
         assignRoles()
+
+        // Do not enter reveal if no word could be selected
+        guard !selectedWord.isEmpty else {
+            hapticsService.warning()
+            return
+        }
+
         selectStartingPlayer()
         currentRevealIndex = 0
         showPassPhoneScreen = true
@@ -188,13 +216,43 @@ class GameViewModel {
             players[shuffledIndices[i]].isImposter = true
         }
 
-        // Select random word from selected categories and difficulties
-        if let result = wordDataService.getRandomWord(
-            from: settings.selectedCategoryIds,
-            difficulties: settings.selectedDifficulties
-        ) {
-            selectedWord = result.word
-            selectedCategory = result.category
+        // Build word pool from selected categories + difficulties (including My Words)
+        let customCategoryId = CustomWordService.customCategoryId
+        let hasCustomSelected = settings.selectedCategoryIds.contains(customCategoryId)
+        let regularCategoryIds = settings.selectedCategoryIds.filter { $0 != customCategoryId }
+
+        var wordPool: [(word: String, category: Category?)] = []
+
+        if !regularCategoryIds.isEmpty {
+            let filteredCategories = wordDataService.categories.filter { regularCategoryIds.contains($0.id) }
+            for category in filteredCategories {
+                for difficulty in settings.selectedDifficulties {
+                    for word in category.words(for: difficulty) {
+                        wordPool.append((word: word, category: category))
+                    }
+                }
+            }
+        }
+
+        if hasCustomSelected {
+            let customWordStrings = customWordService.wordStrings(for: settings.selectedDifficulties)
+            let customCategory = Category(
+                id: customCategoryId,
+                name: "My Words",
+                icon: "heart.text.square",
+                words: [:]
+            )
+            for word in customWordStrings {
+                wordPool.append((word: word, category: customCategory))
+            }
+        }
+
+        if let selected = wordPool.randomElement() {
+            selectedWord = selected.word
+            selectedCategory = selected.category
+        } else {
+            selectedWord = ""
+            selectedCategory = nil
         }
     }
 

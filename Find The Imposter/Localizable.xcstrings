@@ -33,6 +33,9 @@
     "%lld players" : {
 
     },
+    "%lld words" : {
+
+    },
     "•" : {
 
     },
@@ -45,6 +48,9 @@
           }
         }
       }
+    },
+    "Add your own words for a personalized game!" : {
+
     },
     "All Selected" : {
       "localizations" : {
@@ -113,6 +119,15 @@
     "Created by Farhoud Talebi" : {
 
     },
+    "Custom Words" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Difficulty" : {
+
+    },
     "Done" : {
       "localizations" : {
         "en" : {
@@ -133,6 +148,9 @@
           }
         }
       }
+    },
+    "Enter a word..." : {
+
     },
     "Find The Imposter" : {
       "localizations" : {
@@ -254,12 +272,12 @@
         }
       }
     },
-    "Kids" : {
+    "Family Mode (Easy)" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kids"
+            "value" : "Family Mode (Easy)"
           }
         }
       }
@@ -293,6 +311,9 @@
           }
         }
       }
+    },
+    "My Words" : {
+
     },
     "Next" : {
       "extractionState" : "stale",
@@ -426,6 +447,9 @@
         }
       }
     },
+    "Review the app features" : {
+
+    },
     "Select All" : {
       "localizations" : {
         "en" : {
@@ -462,6 +486,9 @@
         }
       }
     },
+    "Show Tutorial Again" : {
+
+    },
     "Simple, everyday words" : {
       "localizations" : {
         "en" : {
@@ -471,6 +498,9 @@
           }
         }
       }
+    },
+    "Skip" : {
+
     },
     "Sound Effects" : {
       "extractionState" : "stale",
@@ -604,6 +634,9 @@
           }
         }
       }
+    },
+    "Your Words" : {
+
     }
   },
   "version" : "1.0"

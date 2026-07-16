@@ -43,6 +43,7 @@ class GameSettings {
     private var _hintMode: HintMode
     private var _soundEnabled: Bool
     private var _hapticsEnabled: Bool
+    private var _hasSeenOnboarding: Bool
 
     // MARK: - Initialization
 
@@ -53,6 +54,7 @@ class GameSettings {
         _hintMode = Self.loadHintMode(from: UserDefaults.standard)
         _soundEnabled = UserDefaults.standard.object(forKey: "soundEnabled") as? Bool ?? true
         _hapticsEnabled = UserDefaults.standard.object(forKey: "hapticsEnabled") as? Bool ?? true
+        _hasSeenOnboarding = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
     }
 
     // MARK: - Game Settings Properties
@@ -96,6 +98,14 @@ class GameSettings {
         set {
             _hapticsEnabled = newValue
             defaults.set(newValue, forKey: "hapticsEnabled")
+        }
+    }
+
+    var hasSeenOnboarding: Bool {
+        get { _hasSeenOnboarding }
+        set {
+            _hasSeenOnboarding = newValue
+            defaults.set(newValue, forKey: "hasSeenOnboarding")
         }
     }
 
