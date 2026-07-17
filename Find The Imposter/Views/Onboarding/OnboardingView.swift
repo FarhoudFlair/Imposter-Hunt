@@ -14,36 +14,40 @@ struct OnboardingView: View {
 
     @State private var currentPage = 0
 
-    private let pages: [OnboardingPage] = [
-        OnboardingPage(
-            icon: "eye.fill",
-            iconColor: .purple,
-            title: "Find The Imposter",
-            subtitle: "The Party Word Game",
-            description: "One player doesn't know the secret word. Can you find who it is before they blend in?"
-        ),
-        OnboardingPage(
-            icon: "brain.head.profile",
-            iconColor: .blue,
-            title: "Strategic Hint System",
-            subtitle: "Only If Starts Mode",
-            description: "Only the starting imposter gets the category hint — creating real strategic tension and mind games."
-        ),
-        OnboardingPage(
-            icon: "face.smiling",
-            iconColor: .green,
-            title: "Family Mode (Easy)",
-            subtitle: "Easy for Everyone",
-            description: "Family-friendly words and adjustable difficulty make it great for game nights with all ages."
-        ),
-        OnboardingPage(
-            icon: "gift.fill",
-            iconColor: .orange,
-            title: "All Free",
-            subtitle: "No Paywalls",
-            description: "All 20 categories included. No subscriptions, no ads, no in-app purchases. Just pure fun."
-        )
-    ]
+    /// Computed (not a stored default) so the category count reflects the live word
+    /// bank instead of a number that goes stale whenever categories are added.
+    private var pages: [OnboardingPage] {
+        [
+            OnboardingPage(
+                icon: "eye.fill",
+                iconColor: .purple,
+                title: "Find The Imposter",
+                subtitle: "The Party Word Game",
+                description: "One player doesn't know the secret word. Can you find who it is before they blend in?"
+            ),
+            OnboardingPage(
+                icon: "brain.head.profile",
+                iconColor: .blue,
+                title: "Strategic Hint System",
+                subtitle: "Only If Starts Mode",
+                description: "Only the starting imposter gets the category hint — creating real strategic tension and mind games."
+            ),
+            OnboardingPage(
+                icon: "face.smiling",
+                iconColor: .green,
+                title: "Family Mode (Easy)",
+                subtitle: "Easy for Everyone",
+                description: "Family-friendly words and adjustable difficulty make it great for game nights with all ages."
+            ),
+            OnboardingPage(
+                icon: "gift.fill",
+                iconColor: .orange,
+                title: "All Free",
+                subtitle: "No Paywalls",
+                description: "All \(viewModel.wordDataService.categories.count) categories included. No subscriptions, no ads, no in-app purchases. Just pure fun."
+            )
+        ]
+    }
 
     var body: some View {
         ZStack {
