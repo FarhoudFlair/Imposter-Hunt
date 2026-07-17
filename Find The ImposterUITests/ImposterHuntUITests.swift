@@ -11,9 +11,128 @@ final class ImposterHuntUITests: XCTestCase {
         return app
     }
 
+    @discardableResult
+    private func launchApp() -> XCUIApplication {
+        let app = makeApp()
+        app.launch()
+        XCTAssertTrue(app.buttons["Start Game"].waitForExistence(timeout: 5))
+        return app
+    }
+
+    private func enterPlayersAndReachGameSettings(in app: XCUIApplication) {
+        app.buttons["Start Game"].tap()
+
+        for (index, name) in ["Alex", "Blair", "Casey"].enumerated() {
+            let field = app.textFields["Player \(index + 1)"]
+            XCTAssertTrue(field.waitForExistence(timeout: 5))
+            field.tap()
+            field.typeText(name)
+        }
+
+        if app.keyboards.buttons["Next"].exists {
+            app.keyboards.buttons["Next"].tap()
+        }
+
+        let nextButton = app.buttons["Next"]
+        XCTAssertTrue(nextButton.waitForExistence(timeout: 5))
+        XCTAssertTrue(nextButton.isEnabled)
+        nextButton.tap()
+
+        XCTAssertTrue(app.staticTexts["Game Settings"].waitForExistence(timeout: 5))
+    }
+
+    private func beginRoleReveal(in app: XCUIApplication) {
+        let beginButton = app.buttons["Begin Game"]
+        XCTAssertTrue(beginButton.waitForExistence(timeout: 5))
+        XCTAssertTrue(beginButton.isEnabled)
+        beginButton.tap()
+        XCTAssertTrue(app.buttons["I'm Ready"].waitForExistence(timeout: 5))
+    }
+
+    private func revealCurrentRole(in app: XCUIApplication) {
+        app.buttons["I'm Ready"].tap()
+
+        let revealButton = app.buttons["reveal-role"]
+        XCTAssertTrue(revealButton.waitForExistence(timeout: 5))
+        revealButton.tap()
+    }
+
     func testHomeScreenLaunches() {
         let app = makeApp()
         app.launch()
         XCTAssertTrue(app.buttons["Start Game"].waitForExistence(timeout: 5))
+    }
+
+    func testRoleCanBeRevealedWithButton() {
+        let app = launchApp()
+        enterPlayersAndReachGameSettings(in: app)
+        beginRoleReveal(in: app)
+
+        revealCurrentRole(in: app)
+
+        XCTAssertTrue(app.buttons["Next Player"].waitForExistence(timeout: 5))
+    }
+
+    func testRoleRevealCanReturnToSettings() {
+        let app = launchApp()
+        enterPlayersAndReachGameSettings(in: app)
+        beginRoleReveal(in: app)
+
+        let passScreenBackButton = app.buttons["back-to-settings"]
+        XCTAssertTrue(passScreenBackButton.waitForExistence(timeout: 5))
+        passScreenBackButton.tap()
+        XCTAssertTrue(app.staticTexts["Game Settings"].waitForExistence(timeout: 5))
+
+        beginRoleReveal(in: app)
+        revealCurrentRole(in: app)
+
+        let revealedRoleBackButton = app.buttons["back-to-settings"]
+        XCTAssertTrue(revealedRoleBackButton.waitForExistence(timeout: 5))
+        revealedRoleBackButton.tap()
+
+        let alert = app.alerts["Return to Settings?"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        XCTAssertTrue(alert.staticTexts[
+            "Revealed roles will be cleared and reassigned when you begin again."
+        ].exists)
+        XCTAssertTrue(alert.buttons["Keep Playing"].exists)
+        alert.buttons["Return to Settings"].tap()
+
+        XCTAssertTrue(app.staticTexts["Game Settings"].waitForExistence(timeout: 5))
+    }
+
+    func testSettingsExposeCustomWordsAndPrivacyPolicy() {
+        let app = launchApp()
+        app.buttons["Settings"].tap()
+
+        let customWordsButton = app.buttons.matching(
+            NSPredicate(format: "label BEGINSWITH %@", "Custom Words")
+        ).firstMatch
+        XCTAssertTrue(customWordsButton.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Version 1.0 (2)"].waitForExistence(timeout: 5))
+
+        let privacyPolicyLink = app.buttons["Privacy Policy"]
+        XCTAssertTrue(privacyPolicyLink.waitForExistence(timeout: 5))
+        for _ in 0..<3 where !privacyPolicyLink.isHittable {
+            app.swipeUp()
+        }
+        XCTAssertTrue(privacyPolicyLink.isHittable)
+        privacyPolicyLink.tap()
+
+        XCTAssertTrue(
+            app.descendants(matching: .any)["privacy-policy"].waitForExistence(timeout: 5)
+        )
+        XCTAssertTrue(app.staticTexts["Imposter Hunt works entirely offline."].exists)
+        XCTAssertTrue(app.staticTexts["The app has no accounts."].exists)
+        XCTAssertTrue(app.staticTexts[
+            "The app does not collect, transmit, sell, share, or track personal data."
+        ].exists)
+        XCTAssertTrue(app.staticTexts[
+            "Player names, settings, and custom words remain on the device in UserDefaults."
+        ].exists)
+        XCTAssertTrue(app.staticTexts["Deleting the app removes its locally stored data."].exists)
+        XCTAssertTrue(app.staticTexts[
+            "Privacy questions can be sent through the developer contact shown on the App Store listing."
+        ].exists)
     }
 }

@@ -11,7 +11,13 @@ import SwiftUI
 struct RoleRevealView: View {
     @Environment(GameViewModel.self) private var viewModel
 
+    let onBackToSettings: () -> Void
+
     @State private var hasAppeared = false
+
+    init(onBackToSettings: @escaping () -> Void = {}) {
+        self.onBackToSettings = onBackToSettings
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -51,17 +57,29 @@ struct RoleRevealView: View {
 
             Spacer()
 
-            // Continue Button (only shown after flip)
-            if viewModel.isCardFlipped {
-                PrimaryButton(
-                    viewModel.currentRevealIndex < viewModel.players.count - 1 ? "Next Player" : "Start Game",
-                    icon: viewModel.currentRevealIndex < viewModel.players.count - 1 ? "arrow.right" : "play.fill"
-                ) {
-                    viewModel.moveToNextPlayer()
+            // Reveal, continue, and cancellation controls
+            VStack(spacing: 12) {
+                if viewModel.isCardFlipped {
+                    PrimaryButton(
+                        viewModel.currentRevealIndex < viewModel.players.count - 1 ? "Next Player" : "Start Game",
+                        icon: viewModel.currentRevealIndex < viewModel.players.count - 1 ? "arrow.right" : "play.fill"
+                    ) {
+                        viewModel.moveToNextPlayer()
+                    }
+                } else {
+                    PrimaryButton("Reveal Role", icon: "eye.fill") {
+                        viewModel.flipCard()
+                    }
+                    .accessibilityIdentifier("reveal-role")
                 }
-                .padding(.horizontal, Constants.largePadding)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
+
+                SecondaryButton("Back to Settings", icon: "arrow.left") {
+                    onBackToSettings()
+                }
+                .accessibilityIdentifier("back-to-settings")
             }
+            .padding(.horizontal, Constants.largePadding)
+            .transition(.move(edge: .bottom).combined(with: .opacity))
 
             Spacer()
                 .frame(height: 30)

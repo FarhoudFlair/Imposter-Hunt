@@ -11,6 +11,8 @@ import SwiftUI
 struct PassPhoneView: View {
     @Environment(GameViewModel.self) private var viewModel
 
+    let onBackToSettings: () -> Void
+
     @State private var iconScale: CGFloat = 0.5
     @State private var iconOpacity: Double = 0
     @State private var textOffset: CGFloat = 20
@@ -18,6 +20,10 @@ struct PassPhoneView: View {
     @State private var buttonOffset: CGFloat = 30
     @State private var buttonOpacity: Double = 0
     @State private var phoneRotation: Double = 0
+
+    init(onBackToSettings: @escaping () -> Void = {}) {
+        self.onBackToSettings = onBackToSettings
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -89,9 +95,16 @@ struct PassPhoneView: View {
             Spacer()
             Spacer()
 
-            // Ready Button
-            PrimaryButton("I'm Ready", icon: "hand.tap.fill") {
-                viewModel.playerReady()
+            // Navigation Buttons
+            VStack(spacing: 12) {
+                PrimaryButton("I'm Ready", icon: "hand.tap.fill") {
+                    viewModel.playerReady()
+                }
+
+                SecondaryButton("Back to Settings", icon: "arrow.left") {
+                    onBackToSettings()
+                }
+                .accessibilityIdentifier("back-to-settings")
             }
             .padding(.horizontal, Constants.largePadding)
             .offset(y: buttonOffset)

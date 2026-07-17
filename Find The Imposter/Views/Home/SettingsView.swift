@@ -22,6 +22,12 @@ struct SettingsView: View {
         }
     }
 
+    private var versionText: String {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "2"
+        return "Version \(version) (\(build))"
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -101,6 +107,45 @@ struct SettingsView: View {
                         }
                         .buttonStyle(.bounce)
 
+                        // Privacy Policy
+                        NavigationLink {
+                            PrivacyPolicyView()
+                        } label: {
+                            HStack(spacing: 16) {
+                                Image(systemName: "hand.raised.fill")
+                                    .font(.title2)
+                                    .foregroundStyle(.purple)
+                                    .frame(width: 44, height: 44)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(Color.purple.opacity(0.15))
+                                    )
+
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("Privacy Policy")
+                                        .font(.headline)
+                                        .foregroundStyle(.white)
+
+                                    Text("How your local data is handled")
+                                        .font(.caption)
+                                        .foregroundStyle(.white.opacity(0.5))
+                                }
+
+                                Spacer()
+
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                                    .foregroundStyle(.white.opacity(0.3))
+                            }
+                            .padding(16)
+                            .background(
+                                RoundedRectangle(cornerRadius: Constants.cornerRadius)
+                                    .fill(Color.elevatedBackground)
+                            )
+                        }
+                        .accessibilityLabel("Privacy Policy")
+                        .buttonStyle(.bounce)
+
                         // Custom Words
                         Button {
                             showCustomWords = true
@@ -148,7 +193,7 @@ struct SettingsView: View {
                                 .font(.headline)
                                 .foregroundStyle(.white.opacity(0.6))
 
-                            Text("Version 1.0")
+                            Text(versionText)
                                 .font(.caption)
                                 .foregroundStyle(.white.opacity(0.4))
                         }

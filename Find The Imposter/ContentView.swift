@@ -10,6 +10,7 @@ import SwiftUI
 /// Root view that manages navigation between game phases
 struct ContentView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.scenePhase) private var scenePhase
 
     /// Driven by settings so "Show Tutorial Again" re-presents without relaunch
     private var showOnboarding: Binding<Bool> {
@@ -72,10 +73,40 @@ struct ContentView: View {
                 }
             }
             .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.gamePhase)
+
+            if scenePhase != .active {
+                privacyShield
+                    .zIndex(100)
+            }
         }
         .fullScreenCover(isPresented: showOnboarding) {
             OnboardingView()
         }
+    }
+
+    private var privacyShield: some View {
+        ZStack {
+            Color.darkBackground
+                .ignoresSafeArea()
+
+            VStack(spacing: 16) {
+                Image(systemName: "eye.trianglebadge.exclamationmark.fill")
+                    .font(.system(size: 56))
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.purple, .pink, .orange],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+
+                Text("IMPOSTER HUNT")
+                    .font(.title2)
+                    .fontWeight(.black)
+                    .foregroundStyle(.white)
+            }
+        }
+        .accessibilityHidden(true)
     }
 }
 
