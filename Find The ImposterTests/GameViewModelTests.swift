@@ -1,8 +1,10 @@
 import XCTest
 @testable import Find_The_Imposter
 
-private struct MaxRandomNumberGenerator: RandomNumberGenerator {
-    mutating func next() -> UInt64 { UInt64.max }
+private struct FixedRandomNumberGenerator: RandomNumberGenerator {
+    let value: UInt64
+
+    mutating func next() -> UInt64 { value }
 }
 
 final class GameViewModelTests: XCTestCase {
@@ -42,6 +44,19 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.gamePhase, .gameSettings)
     }
 
+    func testPlayerNameLengthAcceptsTwentyFourCharactersAndRejectsTwentyFive() {
+        let viewModel = makeViewModel()
+        let boundaryName = String(repeating: "👨‍👩‍👧‍👦", count: Constants.maxPlayerNameLength)
+        XCTAssertEqual(boundaryName.count, 24)
+        viewModel.players = [Player(name: "Alex"), Player(name: boundaryName), Player(name: "Casey")]
+
+        XCTAssertEqual(viewModel.playerSetupValidation, .valid)
+
+        viewModel.players[1].name.append("🙂")
+        XCTAssertEqual(viewModel.players[1].name.count, 25)
+        XCTAssertEqual(viewModel.playerSetupValidation, .nameTooLong)
+    }
+
     func testGameStartValidationDistinguishesMissingDifficultyCategoryAndWords() {
         let viewModel = makeViewModel()
         guard let category = viewModel.wordDataService.categories.first else {
@@ -67,24 +82,27 @@ final class GameViewModelTests: XCTestCase {
     func testOnlyIfStartsHintWorksWhenImposterStarts() {
         let viewModel = makeViewModel()
         viewModel.players = [
-            Player(name: "Alex"),
+            Player(name: "Alex", isImposter: true),
             Player(name: "Blair"),
             Player(name: "Casey", isImposter: true)
         ]
-        var generator = MaxRandomNumberGenerator()
+        var generator = FixedRandomNumberGenerator(value: UInt64.max)
         viewModel.selectStartingPlayer(using: &generator)
 
         viewModel.settings.hintMode = .onlyIfStarts
         XCTAssertEqual(viewModel.startingPlayerIndex, 2)
         XCTAssertTrue(viewModel.imposterGetsHint(for: viewModel.players[2]))
         XCTAssertFalse(viewModel.imposterGetsHint(for: viewModel.players[0]))
+        XCTAssertFalse(viewModel.imposterGetsHint(for: viewModel.players[1]))
 
         viewModel.settings.hintMode = .off
         XCTAssertFalse(viewModel.imposterGetsHint(for: viewModel.players[2]))
+        XCTAssertFalse(viewModel.imposterGetsHint(for: viewModel.players[0]))
 
         viewModel.settings.hintMode = .always
         XCTAssertTrue(viewModel.imposterGetsHint(for: viewModel.players[2]))
-        XCTAssertFalse(viewModel.imposterGetsHint(for: viewModel.players[0]))
+        XCTAssertTrue(viewModel.imposterGetsHint(for: viewModel.players[0]))
+        XCTAssertFalse(viewModel.imposterGetsHint(for: viewModel.players[1]))
     }
 
     func testStartingPlayerCandidatesIncludeEveryPlayer() {
@@ -94,12 +112,19 @@ final class GameViewModelTests: XCTestCase {
             Player(name: "Blair"),
             Player(name: "Casey", isImposter: true)
         ]
-        var generator = MaxRandomNumberGenerator()
+        let cases: [(value: UInt64, expectedIndex: Int)] = [
+            (1, 0),
+            (UInt64.max / 2, 1),
+            (UInt64.max, 2)
+        ]
 
-        viewModel.selectStartingPlayer(using: &generator)
+        for testCase in cases {
+            var generator = FixedRandomNumberGenerator(value: testCase.value)
+            viewModel.selectStartingPlayer(using: &generator)
+            XCTAssertEqual(viewModel.startingPlayerIndex, testCase.expectedIndex)
+        }
 
-        XCTAssertEqual(viewModel.startingPlayerIndex, viewModel.players.indices.last)
-        XCTAssertTrue(viewModel.startingPlayer?.isImposter == true)
+        XCTAssertTrue(viewModel.players[2].isImposter)
     }
 
     func testCancelRoleRevealClearsSecretStateAndPreservesSetup() {
