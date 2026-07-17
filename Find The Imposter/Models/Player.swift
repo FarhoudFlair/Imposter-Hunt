@@ -20,4 +20,8 @@ struct Player: Identifiable, Hashable, Equatable {
         self.isImposter = isImposter
         self.hasRevealedRole = hasRevealedRole
     }
+
+    var trimmedName: String {
+        name.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
 }

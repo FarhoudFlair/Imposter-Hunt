@@ -13,6 +13,8 @@ enum Constants {
     static let minPlayers = 3
     static let maxPlayers = 12
     static let defaultPlayerCount = 3
+    static let maxPlayerNameLength = 24
+    static let maxCustomWordLength = 50
 
     // MARK: - Animation Durations
     static let quickAnimation: Double = 0.2

@@ -106,6 +106,21 @@ struct PlayerSetupView: View {
 
             // Bottom Buttons
             VStack(spacing: 12) {
+                if let validationMessage = viewModel.playerSetupValidation.message {
+                    HStack(spacing: 8) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                        Text(validationMessage)
+                            .font(.caption)
+                    }
+                    .foregroundStyle(.orange)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.orange.opacity(0.15))
+                    )
+                }
+
                 PrimaryButton(
                     "Next",
                     icon: "arrow.right",

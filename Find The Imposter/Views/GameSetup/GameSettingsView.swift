@@ -72,11 +72,11 @@ struct GameSettingsView: View {
             // Bottom Buttons
             VStack(spacing: 12) {
                 // Warning if can't start
-                if !viewModel.canStartGame {
+                if let validationMessage = viewModel.gameStartValidation.message {
                     HStack(spacing: 8) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .foregroundStyle(.orange)
-                        Text("Select at least one difficulty and category")
+                        Text(validationMessage)
                             .font(.caption)
                             .foregroundStyle(.orange)
                     }

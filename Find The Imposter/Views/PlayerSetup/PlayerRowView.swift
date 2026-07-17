@@ -38,7 +38,13 @@ struct PlayerRowView: View {
                 )
 
             // Text Field
-            TextField("Player \(playerNumber)", text: $name)
+            TextField(
+                "Player \(playerNumber)",
+                text: Binding(
+                    get: { name },
+                    set: { name = String($0.prefix(Constants.maxPlayerNameLength)) }
+                )
+            )
                 .font(.body)
                 .foregroundStyle(.white)
                 .autocorrectionDisabled()
