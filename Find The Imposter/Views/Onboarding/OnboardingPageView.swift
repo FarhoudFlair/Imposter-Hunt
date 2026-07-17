@@ -21,13 +21,13 @@ struct OnboardingPage: Identifiable {
 struct OnboardingPageView: View {
     let page: OnboardingPage
     let isActive: Bool
-    
+
     @State private var hasAnimated = false
-    
+
     var body: some View {
         VStack(spacing: 32) {
             Spacer()
-            
+
             // Icon with glow effect
             ZStack {
                 // Glow
@@ -35,7 +35,7 @@ struct OnboardingPageView: View {
                     .fill(page.iconColor.opacity(0.3))
                     .blur(radius: 40)
                     .frame(width: 160, height: 160)
-                
+
                 // Icon container
                 Circle()
                     .fill(
@@ -50,14 +50,14 @@ struct OnboardingPageView: View {
                         Circle()
                             .strokeBorder(page.iconColor.opacity(0.5), lineWidth: 2)
                     )
-                
+
                 Image(systemName: page.icon)
                     .font(.system(size: 50, weight: .medium))
                     .foregroundStyle(page.iconColor)
             }
             .scaleEffect(hasAnimated ? 1.0 : 0.5)
             .opacity(hasAnimated ? 1.0 : 0.0)
-            
+
             VStack(spacing: 16) {
                 // Title
                 Text(page.title)
@@ -65,14 +65,14 @@ struct OnboardingPageView: View {
                     .fontWeight(.bold)
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
-                
+
                 // Subtitle
                 Text(page.subtitle)
                     .font(.headline)
                     .fontWeight(.semibold)
                     .foregroundStyle(page.iconColor)
                     .multilineTextAlignment(.center)
-                
+
                 // Description
                 Text(page.description)
                     .font(.body)
@@ -83,7 +83,7 @@ struct OnboardingPageView: View {
             }
             .offset(y: hasAnimated ? 0 : 30)
             .opacity(hasAnimated ? 1.0 : 0.0)
-            
+
             Spacer()
             Spacer()
         }
@@ -101,7 +101,7 @@ struct OnboardingPageView: View {
             }
         }
     }
-    
+
     private func animateIn() {
         withAnimation(.spring(response: 0.6, dampingFraction: 0.7)) {
             hasAnimated = true

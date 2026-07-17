@@ -22,20 +22,20 @@ class CustomWordService {
 
     private let defaults: UserDefaults
     private let storageKey = "customWords"
-    
+
     // MARK: - In-Memory Backing Storage
-    
+
     private var _customWords: [CustomWord]
-    
+
     // MARK: - Initialization
-    
+
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         _customWords = Self.loadWords(from: defaults)
     }
-    
+
     // MARK: - Public Properties
-    
+
     var customWords: [CustomWord] {
         get { _customWords }
         set {
@@ -74,7 +74,7 @@ class CustomWordService {
     var hasWords: Bool {
         !usableWords.isEmpty
     }
-    
+
     // MARK: - Word Management
 
     /// Add a new custom word, optionally tagged with a built-in category for hints
@@ -138,7 +138,7 @@ class CustomWordService {
     }
 
     // MARK: - Persistence
-    
+
     private static func loadWords(from defaults: UserDefaults) -> [CustomWord] {
         guard let data = defaults.data(forKey: "customWords"),
               let words = try? JSONDecoder().decode([CustomWord].self, from: data) else {
@@ -146,7 +146,7 @@ class CustomWordService {
         }
         return words
     }
-    
+
     private func saveWords() {
         if let data = try? JSONEncoder().encode(_customWords) {
             defaults.set(data, forKey: storageKey)

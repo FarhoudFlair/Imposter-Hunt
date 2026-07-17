@@ -11,9 +11,9 @@ import SwiftUI
 struct OnboardingView: View {
     @Environment(GameViewModel.self) private var viewModel
     @Environment(\.dismiss) private var dismiss
-    
+
     @State private var currentPage = 0
-    
+
     private let pages: [OnboardingPage] = [
         OnboardingPage(
             icon: "eye.fill",
@@ -44,17 +44,17 @@ struct OnboardingView: View {
             description: "All 20 categories included. No subscriptions, no ads, no in-app purchases. Just pure fun."
         )
     ]
-    
+
     var body: some View {
         ZStack {
             // Background
             AnimatedBackground()
-            
+
             VStack(spacing: 0) {
                 // Skip button
                 HStack {
                     Spacer()
-                    
+
                     if currentPage < pages.count - 1 {
                         Button("Skip") {
                             completeOnboarding()
@@ -67,7 +67,7 @@ struct OnboardingView: View {
                     }
                 }
                 .frame(height: 44)
-                
+
                 // Page content
                 TabView(selection: $currentPage) {
                     ForEach(Array(pages.enumerated()), id: \.element.id) { index, page in
@@ -79,7 +79,7 @@ struct OnboardingView: View {
                     }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
-                
+
                 // Bottom section
                 VStack(spacing: 24) {
                     // Page indicators
@@ -92,7 +92,7 @@ struct OnboardingView: View {
                                 .animation(.spring(response: 0.3, dampingFraction: 0.7), value: currentPage)
                         }
                     }
-                    
+
                     // Action button
                     if currentPage == pages.count - 1 {
                         PrimaryButton("Get Started", icon: "arrow.right") {
@@ -112,7 +112,7 @@ struct OnboardingView: View {
             }
         }
     }
-    
+
     private func completeOnboarding() {
         viewModel.settings.hasSeenOnboarding = true
         viewModel.hapticsService.success()

@@ -10,7 +10,7 @@ import SwiftUI
 /// Input row for adding a new custom word
 struct AddWordRow: View {
     @Environment(GameViewModel.self) private var viewModel
-    
+
     @State private var newWord: String = ""
     @State private var selectedDifficulty: Difficulty = .medium
     @State private var selectedCategoryId: String? = nil
@@ -34,7 +34,7 @@ struct AddWordRow: View {
                 Image(systemName: "plus.circle.fill")
                     .font(.title2)
                     .foregroundStyle(.purple)
-                
+
                 TextField("Enter a word...", text: $newWord)
                     .textFieldStyle(.plain)
                     .font(.body)
@@ -69,7 +69,7 @@ struct AddWordRow: View {
                 .foregroundStyle(.orange)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            
+
             // Category hint picker (drives the imposter's hint for this word)
             Menu {
                 Button {
@@ -144,7 +144,7 @@ struct AddWordRow: View {
             }
         }
     }
-    
+
     private func addWord() {
         switch onAdd(newWord, selectedDifficulty, selectedCategoryId) {
         case .added:
