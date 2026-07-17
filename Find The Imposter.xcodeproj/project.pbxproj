@@ -6,20 +6,78 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		084BF50BDE3A42A0A175094E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23D8CDD72F05071200D473D4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 23D8CDDE2F05071200D473D4;
+			remoteInfo = "Find The Imposter";
+		};
+		6A1F6B67FCD2426EBA304F96 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23D8CDD72F05071200D473D4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 23D8CDDE2F05071200D473D4;
+			remoteInfo = "Find The Imposter";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		23D8CDDF2F05071200D473D4 /* Find The Imposter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Find The Imposter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		94A2FB205CB9409EAAB046FE /* Find The ImposterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Find The ImposterTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FDE2210F0EF4F13A1F2C442 /* Find The ImposterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Find The ImposterUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		10B53036B2A449C596856076 /* Exceptions for "Find The Imposter" folder in "Find The Imposter" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Resources/ChatGPT Image Dec 31, 2025 at 03_16_02 AM.png",
+				Resources/MoreZoomedAppIcon.png,
+				Resources/SuperZoomedAPpIcon.png,
+			);
+			target = 23D8CDDE2F05071200D473D4 /* Find The Imposter */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		23D8CDE12F05071200D473D4 /* Find The Imposter */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				10B53036B2A449C596856076 /* Exceptions for "Find The Imposter" folder in "Find The Imposter" target */,
+			);
 			path = "Find The Imposter";
+			sourceTree = "<group>";
+		};
+		8B5FE55188F143A88CFF56D2 /* Find The ImposterTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Find The ImposterTests";
+			sourceTree = "<group>";
+		};
+		1DE06BAE51C14C8BAEC30F50 /* Find The ImposterUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Find The ImposterUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		23D8CDDC2F05071200D473D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4FA447D8698348D6A8CCA3F5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F957E85748E6429989D4E139 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +91,8 @@
 			isa = PBXGroup;
 			children = (
 				23D8CDE12F05071200D473D4 /* Find The Imposter */,
+				8B5FE55188F143A88CFF56D2 /* Find The ImposterTests */,
+				1DE06BAE51C14C8BAEC30F50 /* Find The ImposterUITests */,
 				23D8CDE02F05071200D473D4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +101,8 @@
 			isa = PBXGroup;
 			children = (
 				23D8CDDF2F05071200D473D4 /* Find The Imposter.app */,
+				94A2FB205CB9409EAAB046FE /* Find The ImposterTests.xctest */,
+				9FDE2210F0EF4F13A1F2C442 /* Find The ImposterUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,6 +132,52 @@
 			productReference = 23D8CDDF2F05071200D473D4 /* Find The Imposter.app */;
 			productType = "com.apple.product-type.application";
 		};
+		4420407D8CA34E7FBFACF423 /* Find The ImposterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1CD231646A2B48BD9BA07F75 /* Build configuration list for PBXNativeTarget "Find The ImposterTests" */;
+			buildPhases = (
+				BAB1A0B20E0A4DBFBD405D33 /* Sources */,
+				F957E85748E6429989D4E139 /* Frameworks */,
+				7CFC0078692A41EE974E5D64 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2922A85501134551AE43F73C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				8B5FE55188F143A88CFF56D2 /* Find The ImposterTests */,
+			);
+			name = "Find The ImposterTests";
+			packageProductDependencies = (
+			);
+			productName = "Find The ImposterTests";
+			productReference = 94A2FB205CB9409EAAB046FE /* Find The ImposterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		1029DF0447904A3AA135E332 /* Find The ImposterUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B007D18DE9014AED95530AA4 /* Build configuration list for PBXNativeTarget "Find The ImposterUITests" */;
+			buildPhases = (
+				F7E6F1DA002B4941955E0565 /* Sources */,
+				4FA447D8698348D6A8CCA3F5 /* Frameworks */,
+				598137DA673D4725BFA45DC2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5B383363EAC54CBB88C4D6F4 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1DE06BAE51C14C8BAEC30F50 /* Find The ImposterUITests */,
+			);
+			name = "Find The ImposterUITests";
+			packageProductDependencies = (
+			);
+			productName = "Find The ImposterUITests";
+			productReference = 9FDE2210F0EF4F13A1F2C442 /* Find The ImposterUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -82,6 +190,14 @@
 				TargetAttributes = {
 					23D8CDDE2F05071200D473D4 = {
 						CreatedOnToolsVersion = 16.4;
+					};
+					4420407D8CA34E7FBFACF423 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 23D8CDDE2F05071200D473D4;
+					};
+					1029DF0447904A3AA135E332 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 23D8CDDE2F05071200D473D4;
 					};
 				};
 			};
@@ -100,12 +216,28 @@
 			projectRoot = "";
 			targets = (
 				23D8CDDE2F05071200D473D4 /* Find The Imposter */,
+				4420407D8CA34E7FBFACF423 /* Find The ImposterTests */,
+				1029DF0447904A3AA135E332 /* Find The ImposterUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		23D8CDDD2F05071200D473D4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		598137DA673D4725BFA45DC2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7CFC0078692A41EE974E5D64 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +254,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BAB1A0B20E0A4DBFBD405D33 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7E6F1DA002B4941955E0565 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2922A85501134551AE43F73C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 23D8CDDE2F05071200D473D4 /* Find The Imposter */;
+			targetProxy = 6A1F6B67FCD2426EBA304F96 /* PBXContainerItemProxy */;
+		};
+		5B383363EAC54CBB88C4D6F4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 23D8CDDE2F05071200D473D4 /* Find The Imposter */;
+			targetProxy = 084BF50BDE3A42A0A175094E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		23D8CDE82F05071500D473D4 /* Debug */ = {
@@ -252,7 +411,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 23TQMQNW28;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -262,7 +421,6 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -273,7 +431,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -283,7 +441,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 23TQMQNW28;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -293,7 +451,6 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -304,7 +461,73 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		5F824E882C7E427CB9206AA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 23TQMQNW28;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "FarhoudTalebi.Find-The-ImposterTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Find The Imposter.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Find The Imposter";
+			};
+			name = Debug;
+		};
+		9946C2A845114246BAF22FC8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 23TQMQNW28;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "FarhoudTalebi.Find-The-ImposterTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Find The Imposter.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Find The Imposter";
+			};
+			name = Release;
+		};
+		26D77004BF214DB9880416BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 23TQMQNW28;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "FarhoudTalebi.Find-The-ImposterUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = "Find The Imposter";
+			};
+			name = Debug;
+		};
+		5FAF39B336334AA9ADD6C341 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 23TQMQNW28;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "FarhoudTalebi.Find-The-ImposterUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = "Find The Imposter";
 			};
 			name = Release;
 		};
@@ -325,6 +548,24 @@
 			buildConfigurations = (
 				23D8CDEB2F05071500D473D4 /* Debug */,
 				23D8CDEC2F05071500D473D4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1CD231646A2B48BD9BA07F75 /* Build configuration list for PBXNativeTarget "Find The ImposterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5F824E882C7E427CB9206AA3 /* Debug */,
+				9946C2A845114246BAF22FC8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B007D18DE9014AED95530AA4 /* Build configuration list for PBXNativeTarget "Find The ImposterUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26D77004BF214DB9880416BF /* Debug */,
+				5FAF39B336334AA9ADD6C341 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
