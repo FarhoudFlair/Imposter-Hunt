@@ -171,10 +171,12 @@ struct RoleCardView: View {
                         )
                 )
 
-            Text(categoryName)
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.5))
-                .padding(.top, 4)
+            if !categoryName.isEmpty {
+                Text(categoryName)
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.5))
+                    .padding(.top, 4)
+            }
         }
     }
 

@@ -23,6 +23,16 @@ enum Difficulty: String, CaseIterable, Codable, Identifiable {
         }
     }
 
+    /// Compact label for width-constrained controls (segmented pickers, badges)
+    /// where `displayName` would truncate.
+    var shortName: String {
+        switch self {
+        case .kids: return String(localized: "Easy")
+        case .medium: return String(localized: "Medium")
+        case .hard: return String(localized: "Hard")
+        }
+    }
+
     var description: String {
         switch self {
         case .kids: return String(localized: "Simple, everyday words")

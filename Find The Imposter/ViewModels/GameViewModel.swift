@@ -164,6 +164,11 @@ class GameViewModel {
         }
     }
 
+    /// A hint is displayable only when the current word has a real built-in category.
+    func shouldShowCategoryHint(for player: Player) -> Bool {
+        selectedCategory != nil && imposterGetsHint(for: player)
+    }
+
     var gameStartValidation: GameStartValidation {
         guard settings.hasDifficultySelected else { return .noDifficulty }
         guard settings.hasCategorySelected else { return .noCategory }
@@ -308,15 +313,14 @@ class GameViewModel {
         }
 
         if hasCustomSelected {
-            let customWordStrings = customWordService.wordStrings(for: settings.selectedDifficulties)
-            let customCategory = Category(
-                id: customCategoryId,
-                name: "My Words",
-                icon: "heart.text.square",
-                words: [:]
-            )
-            for word in customWordStrings {
-                wordPool.append((word: word, category: customCategory))
+            // Tag-driven hint: a custom word reveals its own category, never "My Words",
+            // which would tell the imposter the answer is in the user's short custom list.
+            // Untagged words carry a nil category, so the imposter simply gets no hint.
+            for custom in customWordService.words(for: settings.selectedDifficulties) {
+                let taggedCategory = custom.categoryId.flatMap { id in
+                    wordDataService.categories.first { $0.id == id }
+                }
+                wordPool.append((word: custom.word, category: taggedCategory))
             }
         }
 

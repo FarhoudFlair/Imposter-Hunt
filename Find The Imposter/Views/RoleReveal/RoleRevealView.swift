@@ -88,15 +88,15 @@ struct RoleRevealView: View {
             RoleCardView(
                 isImposter: player.isImposter,
                 word: viewModel.selectedWord,
-                categoryName: viewModel.selectedCategory?.name ?? "Unknown",
-                showHint: viewModel.imposterGetsHint(for: player)
+                categoryName: viewModel.selectedCategory?.name ?? "",
+                showHint: viewModel.shouldShowCategoryHint(for: player)
             )
         } else {
             // Fallback (shouldn't happen)
             RoleCardView(
                 isImposter: false,
                 word: "Error",
-                categoryName: "Unknown",
+                categoryName: "",
                 showHint: false
             )
         }

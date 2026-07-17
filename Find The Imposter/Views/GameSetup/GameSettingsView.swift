@@ -10,6 +10,7 @@ import SwiftUI
 /// Pre-game configuration screen
 struct GameSettingsView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @State private var isManagingCustomWords = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -62,6 +63,33 @@ struct GameSettingsView: View {
                     SettingsSection(title: "Categories", icon: "square.grid.2x2.fill") {
                         CategoryPickerView()
                     }
+
+                    SettingsSection(title: "Custom Words", icon: "heart.text.square") {
+                        Button {
+                            isManagingCustomWords = true
+                            viewModel.hapticsService.lightTap()
+                        } label: {
+                            HStack(spacing: 12) {
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text("Manage Custom Words")
+                                        .font(.body)
+                                        .fontWeight(.medium)
+                                    Text(customWordCountText)
+                                        .font(.caption)
+                                        .foregroundStyle(.white.opacity(0.5))
+                                }
+
+                                Spacer()
+
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                                    .foregroundStyle(.white.opacity(0.4))
+                            }
+                            .foregroundStyle(.white)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
                 .padding(.horizontal, Constants.largePadding)
                 .padding(.bottom, 120)
@@ -112,6 +140,14 @@ struct GameSettingsView: View {
                 .offset(y: -50)
             )
         }
+        .sheet(isPresented: $isManagingCustomWords) {
+            CustomWordsView()
+        }
+    }
+
+    private var customWordCountText: String {
+        let count = viewModel.customWordService.wordCount
+        return "\(count) word\(count == 1 ? "" : "s")"
     }
 
 }

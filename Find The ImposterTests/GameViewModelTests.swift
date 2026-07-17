@@ -172,10 +172,89 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.gamePhase, .gameSettings)
     }
 
-    private func makeViewModel() -> GameViewModel {
-        let settings = GameSettings(defaults: makeDefaults())
+    func testTaggedCustomWordUsesItsBuiltInCategoryForHints() {
+        let defaults = makeDefaults()
+        let viewModel = makeViewModel(defaults: defaults)
+        guard let category = viewModel.wordDataService.categories.first else {
+            return XCTFail("Expected bundled word data to contain a category")
+        }
+        guard case .added = viewModel.customWordService.addWord(
+            "Task Three Tagged Word",
+            difficulty: .kids,
+            categoryId: category.id
+        ) else {
+            return XCTFail("Expected the custom word to be added")
+        }
+        viewModel.players = [Player(name: "Alex"), Player(name: "Blair"), Player(name: "Casey")]
+        viewModel.settings.selectedDifficulties = [.kids]
+        viewModel.settings.selectedCategoryIds = [CustomWordService.customCategoryId]
+        viewModel.settings.hintMode = .always
+
+        viewModel.assignRoles()
+
+        XCTAssertEqual(viewModel.selectedWord, "Task Three Tagged Word")
+        XCTAssertEqual(viewModel.selectedCategory, category)
+        guard let imposter = viewModel.players.first(where: \.isImposter) else {
+            return XCTFail("Expected an assigned imposter")
+        }
+        XCTAssertTrue(viewModel.imposterGetsHint(for: imposter))
+        XCTAssertTrue(viewModel.shouldShowCategoryHint(for: imposter))
+    }
+
+    func testUntaggedCustomWordHasNoSyntheticCategoryHint() {
+        let defaults = makeDefaults()
+        let viewModel = makeViewModel(defaults: defaults)
+        guard case .added = viewModel.customWordService.addWord("Task Three Untagged Word", difficulty: .kids) else {
+            return XCTFail("Expected the custom word to be added")
+        }
+        viewModel.players = [Player(name: "Alex"), Player(name: "Blair"), Player(name: "Casey")]
+        viewModel.settings.selectedDifficulties = [.kids]
+        viewModel.settings.selectedCategoryIds = [CustomWordService.customCategoryId]
+        viewModel.settings.hintMode = .always
+
+        viewModel.assignRoles()
+
+        XCTAssertEqual(viewModel.selectedWord, "Task Three Untagged Word")
+        XCTAssertNil(viewModel.selectedCategory)
+        guard let imposter = viewModel.players.first(where: \.isImposter) else {
+            return XCTFail("Expected an assigned imposter")
+        }
+        XCTAssertTrue(viewModel.imposterGetsHint(for: imposter))
+        XCTAssertFalse(viewModel.shouldShowCategoryHint(for: imposter))
+    }
+
+    func testUnknownCustomCategoryIdentifierHasNoHint() {
+        let defaults = makeDefaults()
+        let viewModel = makeViewModel(defaults: defaults)
+        guard case .added = viewModel.customWordService.addWord(
+            "Task Three Unknown Category",
+            difficulty: .kids,
+            categoryId: "missing-category"
+        ) else {
+            return XCTFail("Expected the custom word to be added")
+        }
+        viewModel.players = [Player(name: "Alex"), Player(name: "Blair"), Player(name: "Casey")]
+        viewModel.settings.selectedDifficulties = [.kids]
+        viewModel.settings.selectedCategoryIds = [CustomWordService.customCategoryId]
+        viewModel.settings.hintMode = .always
+
+        viewModel.assignRoles()
+
+        XCTAssertNil(viewModel.selectedCategory)
+        guard let imposter = viewModel.players.first(where: \.isImposter) else {
+            return XCTFail("Expected an assigned imposter")
+        }
+        XCTAssertFalse(viewModel.shouldShowCategoryHint(for: imposter))
+    }
+
+    private func makeViewModel(defaults: UserDefaults? = nil) -> GameViewModel {
+        let defaults = defaults ?? makeDefaults()
+        let settings = GameSettings(defaults: defaults)
         settings.soundEnabled = false
         settings.hapticsEnabled = false
-        return GameViewModel(settings: settings)
+        return GameViewModel(
+            settings: settings,
+            customWordService: CustomWordService(defaults: defaults)
+        )
     }
 }

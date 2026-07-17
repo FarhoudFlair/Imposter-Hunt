@@ -21,8 +21,8 @@ struct CustomWordsView: View {
                 List {
                     // Add word section
                     Section {
-                        AddWordRow { word, difficulty in
-                            viewModel.customWordService.addWord(word, difficulty: difficulty)
+                        AddWordRow { word, difficulty, categoryId in
+                            viewModel.customWordService.addWord(word, difficulty: difficulty, categoryId: categoryId)
                         }
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(
@@ -37,7 +37,7 @@ struct CustomWordsView: View {
                     // Words list or empty state
                     if viewModel.customWordService.hasWords {
                         Section {
-                            ForEach(viewModel.customWordService.customWords) { word in
+                            ForEach(viewModel.customWordService.usableWords) { word in
                                 CustomWordRow(word: word)
                                     .listRowBackground(
                                         RoundedRectangle(cornerRadius: Constants.cornerRadius)
