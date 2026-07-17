@@ -36,7 +36,13 @@ extension Color {
 
     /// Get a consistent color for a category based on its ID
     static func forCategory(_ categoryId: String) -> Color {
-        let hash = abs(categoryId.hashValue)
-        return categoryColors[hash % categoryColors.count]
+        switch categoryId {
+        case "creators": return .cyan
+        case "athletes": return .green
+        case "celebrities": return .pink
+        default:
+            let hash = abs(categoryId.hashValue)
+            return categoryColors[hash % categoryColors.count]
+        }
     }
 }
