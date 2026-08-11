@@ -66,8 +66,8 @@ Environment:
 - Marketing version 1.0, build number 2
 
 Automated commands and outcomes:
-1. `xcodebuild test -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" -destination "platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5" -derivedDataPath /tmp/imposter-hunt-final-tests-20260716`
-   Outcome: ** TEST SUCCEEDED **; 31 tests passed, 0 failed.
+1. `xcodebuild test -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" -destination "platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5" -derivedDataPath /tmp/imposter-hunt-final-tests-clean-20260716`
+   Outcome: ** TEST SUCCEEDED **; 30 tests passed, 0 failed (committed tree only; no untracked screenshot helper).
 2. `xcodebuild build -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" -configuration Release -destination "generic/platform=iOS" -derivedDataPath /tmp/imposter-hunt-final-release-20260716 CODE_SIGNING_ALLOWED=NO`
    Outcome: ** BUILD SUCCEEDED **.
 3. `xcodebuild analyze -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" -configuration Release -destination "generic/platform=iOS" -derivedDataPath /tmp/imposter-hunt-final-analyze-20260716 CODE_SIGNING_ALLOWED=NO`
@@ -87,8 +87,8 @@ Automated commands and outcomes:
 Manual simulator QA (iPhone 17 Pro Max, Reduce Motion enabled for motion checks; also verified accessibility-extra-extra-extra-large content size on home):
 - Home branding shows Imposter Hunt with Start Game and Settings; no overlays in screenshot 01.
 - Game Settings shows all difficulties selected, 23 of 23 categories selected, custom words entry, Begin Game (screenshot 02).
-- Role flow starts at pass-the-phone for player Alex without exposing secret role or word data (screenshot 03).
-- Existing automated UI coverage also exercised home launch, duplicate player-name block, role reveal by button, back-to-settings from role reveal, and Settings → Custom Words / Privacy Policy (ImposterHuntUITests, included in the 31-test suite above).
+- Role-reveal card for Alex in face-down state ("Swipe to Reveal" / Reveal Role) with no secret role or word exposed (screenshot 03).
+- Existing automated UI coverage also exercised home launch, duplicate player-name block, role reveal by button, back-to-settings from role reveal, and Settings → Custom Words / Privacy Policy (ImposterHuntUITests, included in the 30-test suite above).
 - Reduce Motion preference confirmed enabled (`ReduceMotionEnabled=1`); home remained usable under accessibility XXXL text size.
 
 Screenshots committed:
