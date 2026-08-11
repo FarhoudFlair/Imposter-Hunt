@@ -10,6 +10,8 @@ import SwiftUI
 /// Container that manages the role reveal flow for all players
 struct RoleRevealContainerView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @State private var isShowingReturnConfirmation = false
 
     var body: some View {
@@ -28,8 +30,14 @@ struct RoleRevealContainerView: View {
                     ))
             }
         }
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.showPassPhoneScreen)
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.currentRevealIndex)
+        .animation(
+            reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8),
+            value: viewModel.showPassPhoneScreen
+        )
+        .animation(
+            reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8),
+            value: viewModel.currentRevealIndex
+        )
         .alert("Return to Settings?", isPresented: $isShowingReturnConfirmation) {
             Button("Keep Playing", role: .cancel) {}
             Button("Return to Settings", role: .destructive) {

@@ -75,7 +75,9 @@ struct CustomWordsView: View {
 
                                 Spacer()
 
-                                Text("\(viewModel.customWordService.wordCount) words")
+                                let count = viewModel.customWordService.wordCount
+
+                                Text("\(count) word\(count == 1 ? "" : "s")")
                                     .font(.caption)
                                     .foregroundStyle(.white.opacity(0.5))
                                     .textCase(nil)

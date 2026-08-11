@@ -11,6 +11,8 @@ import SwiftUI
 struct ContentView: View {
     @Environment(GameViewModel.self) private var viewModel
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
 
     /// Driven by settings so "Show Tutorial Again" re-presents without relaunch
     private var showOnboarding: Binding<Bool> {
@@ -72,7 +74,10 @@ struct ContentView: View {
                         ))
                 }
             }
-            .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.gamePhase)
+            .animation(
+                reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8),
+                value: viewModel.gamePhase
+            )
 
             if scenePhase != .active {
                 privacyShield
