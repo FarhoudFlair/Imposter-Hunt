@@ -6,7 +6,7 @@ Imposter Hunt is a local, offline party game for iPhone.
 
 - The app has no accounts.
 - The app does not collect, transmit, sell, share, or track any personal data.
-- Player names, preferences, and custom words are stored locally on your device using UserDefaults.
+- Settings and custom words are stored locally on your device using UserDefaults. Player names stay in memory for the current session only and are not written to disk.
 - Deleting the app removes all locally stored data.
 - For privacy questions, use the developer contact information on the App Store listing.
 

@@ -32,7 +32,7 @@ struct PrivacyPolicyView: View {
                             "The app does not collect, transmit, sell, share, or track personal data."
                         )
                         policyStatement(
-                            "Player names, settings, and custom words remain on the device in UserDefaults."
+                            "Settings and custom words stay on the device in UserDefaults. Player names stay in memory for the current session only."
                         )
                         policyStatement("Deleting the app removes its locally stored data.")
                         policyStatement(

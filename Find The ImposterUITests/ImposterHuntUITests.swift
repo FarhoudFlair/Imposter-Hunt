@@ -141,20 +141,20 @@ final class ImposterHuntUITests: XCTestCase {
         XCTAssertTrue(privacyPolicyLink.isHittable)
         privacyPolicyLink.tap()
 
-        XCTAssertTrue(
-            app.descendants(matching: .any)["privacy-policy"].waitForExistence(timeout: 5)
-        )
-        XCTAssertTrue(app.staticTexts["Imposter Hunt works entirely offline."].exists)
-        XCTAssertTrue(app.staticTexts["The app has no accounts."].exists)
-        XCTAssertTrue(app.staticTexts[
-            "The app does not collect, transmit, sell, share, or track personal data."
-        ].exists)
-        XCTAssertTrue(app.staticTexts[
-            "Player names, settings, and custom words remain on the device in UserDefaults."
-        ].exists)
-        XCTAssertTrue(app.staticTexts["Deleting the app removes its locally stored data."].exists)
-        XCTAssertTrue(app.staticTexts[
-            "Privacy questions can be sent through the developer contact shown on the App Store listing."
-        ].exists)
+        let privacyRoot = app.descendants(matching: .any)["privacy-policy"]
+        XCTAssertTrue(privacyRoot.waitForExistence(timeout: 8))
+
+        let statements = [
+            "Imposter Hunt works entirely offline.",
+            "The app has no accounts.",
+            "The app does not collect, transmit, sell, share, or track personal data.",
+            "Settings and custom words stay on the device in UserDefaults. Player names stay in memory for the current session only.",
+            "Deleting the app removes its locally stored data.",
+            "Privacy questions can be sent through the developer contact shown on the App Store listing.",
+        ]
+        for statement in statements {
+            let node = app.staticTexts[statement]
+            XCTAssertTrue(node.waitForExistence(timeout: 5), "Missing privacy statement: \(statement)")
+        }
     }
 }

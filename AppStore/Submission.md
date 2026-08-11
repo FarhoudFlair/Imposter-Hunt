@@ -9,19 +9,19 @@
 Party word game for friends
 
 ## Promotional Text (170 characters max)
-Hunt the imposter using a secret word. Pass the phone to reveal roles, then guess who knows it. Fully local and offline. No accounts or internet required.
+Hunt the imposters with a secret word. Pass the phone to reveal roles, then spot who is bluffing. Fully local and offline. No accounts or internet required.
 
 ## Description (4000 characters max)
 Imposter Hunt is a fast, fun, pass-the-phone party game for 3-12 players on a single iPhone.
 
-One player is secretly the imposter. Everyone else knows the secret word and must spot who is bluffing. After roles are revealed privately, the group debates and votes. Three hint modes, custom words, and 23 themed categories keep every round fresh.
+Choose one or more imposters. Everyone else knows the secret word and must spot who is bluffing. After roles are revealed privately, the group debates and votes. Three hint modes, custom words, and 23 themed categories keep every round fresh.
 
 How to play
 - Enter 3-12 player names
-- Choose a difficulty and one or more categories
+- Choose a difficulty, categories, and how many imposters
 - Pass the phone around for private role reveals
-- The word holders drop clues while the imposter tries to blend in
-- Reveal the imposter, then the word
+- Word holders drop clues while imposters try to blend in
+- Reveal the imposters, then the word
 
 Features
 - 23 categories with 2,070 curated, family-safe words

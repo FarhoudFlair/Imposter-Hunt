@@ -25,7 +25,7 @@ struct OnboardingView: View {
                 iconColor: .purple,
                 title: "Imposter Hunt",
                 subtitle: "The Party Word Game",
-                description: "One player doesn't know the secret word. Can you find who it is before they blend in?"
+                description: "One or more players don't know the secret word. Spot the imposters before they blend in."
             ),
             OnboardingPage(
                 icon: "brain.head.profile",
