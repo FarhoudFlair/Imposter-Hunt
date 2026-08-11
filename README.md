@@ -1,21 +1,24 @@
 # Imposter Hunt
 
-An iOS game built with SwiftUI where players must find the imposter among them.
+An iPhone-only iOS game built with SwiftUI where players must find the imposter among them.
 
 ## Requirements
 
-- iOS 18.5+
-- Xcode 16.4+
+- iOS 17.0 or later
+- Xcode 26 or later for current App Store submission requirements
 - Swift 5.0
+- iPhone only in portrait orientation
 
-## Building
+## Building and Testing
+
+Open `Find The Imposter.xcodeproj` and use the shared `Find The Imposter` scheme.
 
 ```bash
-# Open in Xcode
-open "Find The Imposter.xcodeproj"
+# Run the full unit and UI test suite
+xcodebuild test -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" -destination "platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5" -derivedDataPath /tmp/imposter-hunt-final-tests-20260716
 
-# Or build from command line
-xcodebuild -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" -configuration Debug build
+# Build the unsigned Release configuration
+xcodebuild build -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" -configuration Release -destination "generic/platform=iOS" -derivedDataPath /tmp/imposter-hunt-final-release-20260716 CODE_SIGNING_ALLOWED=NO
 ```
 
 ## Project Structure

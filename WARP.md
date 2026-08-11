@@ -3,27 +3,26 @@
 This file provides guidance to WARP (warp.dev) when working with code in this repository.
 
 ## Project Overview
-"Find The Imposter" is an iOS application built with SwiftUI targeting iOS 18.5+. The project uses Xcode 16.4 and Swift 5.0.
+Imposter Hunt is an iPhone-only, portrait iOS application built with SwiftUI. It supports iOS 17.0 or later and requires Xcode 26 or later for current App Store submission requirements. Use the shared Find The Imposter scheme. The technical Xcode project and shared scheme remain named `Find The Imposter`.
 
 ## Build System
 This project uses Xcode's native build system with the following configuration:
 - **Development Team**: 23TQMQNW28
 - **Bundle Identifier**: FarhoudTalebi.Find-The-Imposter
-- **Deployment Target**: iOS 18.5
-- **Supported Devices**: iPhone and iPad (Universal)
+- **Deployment Target**: iOS 17.0
+- **Supported Devices**: iPhone only, portrait orientation
 
 ## Common Commands
 
-### Building and Running
+### Testing and Release Building
+Use the shared `Find The Imposter` scheme for command-line and Xcode operations.
+
 ```bash
-# Build the project
-xcodebuild -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" -configuration Debug build
+# Run the full unit and UI test suite
+xcodebuild test -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" -destination "platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5" -derivedDataPath /tmp/imposter-hunt-final-tests-20260716
 
-# Build for release
-xcodebuild -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" -configuration Release build
-
-# Clean build folder
-xcodebuild -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" clean
+# Build the unsigned Release configuration
+xcodebuild build -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" -configuration Release -destination "generic/platform=iOS" -derivedDataPath /tmp/imposter-hunt-final-release-20260716 CODE_SIGNING_ALLOWED=NO
 ```
 
 ### Opening in Xcode
@@ -61,8 +60,8 @@ This project uses SwiftUI's declarative UI framework:
 The project uses Automatic code signing with development team ID 23TQMQNW28. When working on this project, you may need to update the development team to match your Apple Developer account.
 
 ### Supported Orientations
-- **iPhone**: Portrait, Landscape Left, Landscape Right
-- **iPad**: All orientations including upside down
+- **iPhone**: Portrait only
+- **iPad**: Not supported in the App Store release
 
 ### Swift Compilation
 - Swift 5.0 language version

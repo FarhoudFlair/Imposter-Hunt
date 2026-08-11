@@ -5,22 +5,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build Commands
 
 ```bash
-# Build for iOS Simulator
-xcodebuild -scheme "Find The Imposter" -destination "platform=iOS Simulator,name=iPhone 16" build
+# Run the full unit and UI test suite with the shared scheme
+xcodebuild test -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" -destination "platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5" -derivedDataPath /tmp/imposter-hunt-final-tests-20260716
 
+# Build the unsigned Release configuration
+xcodebuild build -project "Find The Imposter.xcodeproj" -scheme "Find The Imposter" -configuration Release -destination "generic/platform=iOS" -derivedDataPath /tmp/imposter-hunt-final-release-20260716 CODE_SIGNING_ALLOWED=NO
 # Convert audio files to iOS-optimal format
 afconvert input.wav -o output.m4a -f m4af -d aac -b 128000
 ```
 
 ## Architecture
 
+### Release Scope and Shared Tests
+- The product name is Imposter Hunt. Keep the technical project, module, and shared scheme names as `Find The Imposter`.
+- The App Store release supports iOS 17.0 or later on iPhone only in portrait orientation. Do not add iPad or landscape release support.
+- The shared `Find The Imposter` scheme includes the app target, the `Find The ImposterTests` unit-test target, and the `Find The ImposterUITests` UI-test target. Use the shared scheme for all test and Release builds.
+- Shared unit and UI tests exercise injected UserDefaults defaults, CustomWord optional categoryId handling, and the corrected uniform starting-player selection rule.
+
 ### MVVM with Environment Injection
-- **Single ViewModel:** `GameViewModel` manages all game state, injected via `.environment()` at app root
-- **Services:** `AudioService`, `HapticsService`, `WordDataService`, `CustomWordService` - instantiated within GameViewModel
+- **Single ViewModel:** `GameViewModel` manages all game state and is injected via `.environment()` at the app root
+- **Dependencies:** The `GameViewModel` initializer accepts `GameSettings`, `WordDataService`, `AudioService`, `HapticsService`, and `CustomWordService`; production uses their default instances
 - **Game phases:** Controlled by `GamePhase` enum, navigation handled in `ContentView`
 
-### Critical: SwiftUI Reactivity with UserDefaults
-`GameSettings` uses **in-memory backing storage** with UserDefaults sync. `@Observable` only tracks stored property mutations - computed properties via UserDefaults serialization don't trigger view updates.
+`GameSettings` and `CustomWordService` use **in-memory backing storage** with UserDefaults sync. Each initializer accepts `defaults: UserDefaults = .standard`; tests inject an isolated suite-specific `UserDefaults` instance. `@Observable` only tracks stored property mutations, so computed properties that serialize directly through UserDefaults do not trigger view updates.
 
 ```swift
 // CORRECT pattern used in this codebase:
@@ -52,7 +59,7 @@ enum HintMode { case off, always, onlyIfStarts }
 ```
 - `off`: Imposters never see category
 - `always`: All imposters see category hint
-- `onlyIfStarts`: Only the randomly-chosen starting imposter gets hint
+- `onlyIfStarts`: The starting player is chosen randomly from all players. The player sees a hint only when that randomly chosen player is an imposter.
 
 ### Card Flip Animation
 `FlippableCardView` uses continuous gesture tracking:
@@ -80,8 +87,8 @@ category.words(for: .medium)  // Returns [String]
 ```
 
 #### Custom Words System
-- `CustomWord` model: word + difficulty + UUID
-- `CustomWordService`: UserDefaults persistence, in-memory backing (same pattern as GameSettings)
+- `CustomWord` model: word + difficulty + optional `categoryId` + UUID. A missing category means the imposter receives no category hint for that word.
+- `CustomWordService`: UserDefaults persistence with injected defaults and in-memory backing (same pattern as `GameSettings`)
 - Custom category uses special ID `"custom"` in `CategoryPickerView` and `GameViewModel`
 - Words are mixed into the general word pool when "My Words" category is selected
 
