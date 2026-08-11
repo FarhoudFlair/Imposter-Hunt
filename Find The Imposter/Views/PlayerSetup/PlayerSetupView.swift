@@ -129,6 +129,7 @@ struct PlayerSetupView: View {
                     focusedPlayerIndex = nil
                     viewModel.proceedToSettings()
                 }
+                .accessibilityIdentifier("player-setup-next")
 
                 SecondaryButton("Back", icon: "arrow.left") {
                     viewModel.returnHome()

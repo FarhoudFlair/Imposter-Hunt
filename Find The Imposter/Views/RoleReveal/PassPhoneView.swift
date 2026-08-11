@@ -100,6 +100,7 @@ struct PassPhoneView: View {
                 PrimaryButton("I'm Ready", icon: "hand.tap.fill") {
                     viewModel.playerReady()
                 }
+                .accessibilityIdentifier("pass-phone-ready")
 
                 SecondaryButton("Back to Settings", icon: "arrow.left") {
                     onBackToSettings()

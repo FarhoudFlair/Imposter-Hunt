@@ -41,6 +41,7 @@ struct FlippableCardView<Front: View, Back: View>: View {
                 back
                     .frame(width: cardWidth, height: cardHeight)
                     .opacity(effectiveRotation < 90 ? 1 : 0)
+                    .accessibilityHidden(effectiveRotation >= 90)
 
                 // Front of card (role reveal side) - visible when rotation >= 90
                 front
@@ -50,6 +51,7 @@ struct FlippableCardView<Front: View, Back: View>: View {
                         axis: (x: 0, y: 1, z: 0)
                     )
                     .opacity(effectiveRotation >= 90 ? 1 : 0)
+                    .accessibilityHidden(effectiveRotation < 90)
             }
             .rotation3DEffect(
                 .degrees(effectiveRotation),

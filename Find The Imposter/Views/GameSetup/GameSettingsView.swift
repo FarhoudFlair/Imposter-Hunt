@@ -123,6 +123,7 @@ struct GameSettingsView: View {
                 ) {
                     viewModel.beginRoleReveal()
                 }
+                .accessibilityIdentifier("game-settings-begin")
 
                 SecondaryButton("Back", icon: "arrow.left") {
                     viewModel.goBackFromSettings()
@@ -200,6 +201,7 @@ struct ImposterCountPicker: View {
                     .foregroundStyle(count > 1 ? .purple : .gray)
             }
             .disabled(count <= 1)
+            .accessibilityLabel("Decrease imposter count")
 
             // Count Display
             Text("\(count)")
@@ -218,6 +220,7 @@ struct ImposterCountPicker: View {
                     .foregroundStyle(count < maxCount ? .purple : .gray)
             }
             .disabled(count >= maxCount)
+            .accessibilityLabel("Increase imposter count")
         }
         .frame(maxWidth: .infinity)
     }

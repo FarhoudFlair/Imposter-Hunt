@@ -100,10 +100,12 @@ struct HomeView: View {
                 PrimaryButton("Start Game", icon: "play.fill") {
                     viewModel.startNewGame()
                 }
+                .accessibilityIdentifier("home-start-game")
 
                 SecondaryButton("Settings", icon: "gearshape.fill") {
                     viewModel.showSettings = true
                 }
+                .accessibilityIdentifier("home-settings")
             }
             .padding(.horizontal, Constants.largePadding)
             .offset(y: buttonOffset)

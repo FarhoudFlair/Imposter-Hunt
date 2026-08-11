@@ -198,6 +198,7 @@ struct CategoryChip: View {
             )
         }
         .buttonStyle(.bounce)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
     private var categoryColor: Color {
@@ -240,6 +241,7 @@ struct CustomCategoryChip: View {
             )
         }
         .buttonStyle(.bounce)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 

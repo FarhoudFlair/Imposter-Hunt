@@ -266,6 +266,9 @@ struct SettingsToggleRow: View {
             RoundedRectangle(cornerRadius: Constants.cornerRadius)
                 .fill(Color.elevatedBackground)
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(title)
+        .accessibilityValue(isOn ? "On" : "Off")
     }
 }
 

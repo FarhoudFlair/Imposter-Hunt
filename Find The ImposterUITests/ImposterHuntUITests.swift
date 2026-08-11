@@ -15,12 +15,12 @@ final class ImposterHuntUITests: XCTestCase {
     private func launchApp() -> XCUIApplication {
         let app = makeApp()
         app.launch()
-        XCTAssertTrue(app.buttons["Start Game"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["home-start-game"].waitForExistence(timeout: 5))
         return app
     }
 
     private func enterPlayersAndReachGameSettings(in app: XCUIApplication) {
-        app.buttons["Start Game"].tap()
+        app.buttons["home-start-game"].tap()
 
         for (index, name) in ["Alex", "Blair", "Casey"].enumerated() {
             let field = app.textFields["Player \(index + 1)"]
@@ -33,7 +33,7 @@ final class ImposterHuntUITests: XCTestCase {
             app.keyboards.buttons["Next"].tap()
         }
 
-        let nextButton = app.buttons["Next"]
+        let nextButton = app.buttons["player-setup-next"]
         XCTAssertTrue(nextButton.waitForExistence(timeout: 5))
         XCTAssertTrue(nextButton.isEnabled)
         nextButton.tap()
@@ -42,15 +42,15 @@ final class ImposterHuntUITests: XCTestCase {
     }
 
     private func beginRoleReveal(in app: XCUIApplication) {
-        let beginButton = app.buttons["Begin Game"]
+        let beginButton = app.buttons["game-settings-begin"]
         XCTAssertTrue(beginButton.waitForExistence(timeout: 5))
         XCTAssertTrue(beginButton.isEnabled)
         beginButton.tap()
-        XCTAssertTrue(app.buttons["I'm Ready"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["pass-phone-ready"].waitForExistence(timeout: 5))
     }
 
     private func revealCurrentRole(in app: XCUIApplication) {
-        app.buttons["I'm Ready"].tap()
+        app.buttons["pass-phone-ready"].tap()
 
         let revealButton = app.buttons["reveal-role"]
         XCTAssertTrue(revealButton.waitForExistence(timeout: 5))
@@ -60,7 +60,29 @@ final class ImposterHuntUITests: XCTestCase {
     func testHomeScreenLaunches() {
         let app = makeApp()
         app.launch()
-        XCTAssertTrue(app.buttons["Start Game"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["home-start-game"].waitForExistence(timeout: 5))
+    }
+
+    func testDuplicatePlayerNamesCannotContinue() {
+        let app = launchApp()
+        app.buttons["home-start-game"].tap()
+
+        for (index, name) in ["Alex", "Alex", "Casey"].enumerated() {
+            let field = app.textFields["Player \(index + 1)"]
+            XCTAssertTrue(field.waitForExistence(timeout: 5))
+            field.tap()
+            field.typeText(name)
+        }
+
+        if app.keyboards.buttons["Next"].exists {
+            app.keyboards.buttons["Next"].tap()
+        }
+
+        XCTAssertTrue(app.staticTexts["Player names must be unique"].waitForExistence(timeout: 5))
+
+        let nextButton = app.buttons["player-setup-next"]
+        XCTAssertTrue(nextButton.waitForExistence(timeout: 5))
+        XCTAssertFalse(nextButton.isEnabled)
     }
 
     func testRoleCanBeRevealedWithButton() {
@@ -70,7 +92,7 @@ final class ImposterHuntUITests: XCTestCase {
 
         revealCurrentRole(in: app)
 
-        XCTAssertTrue(app.buttons["Next Player"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["role-reveal-next"].waitForExistence(timeout: 5))
     }
 
     func testRoleRevealCanReturnToSettings() {
@@ -103,7 +125,7 @@ final class ImposterHuntUITests: XCTestCase {
 
     func testSettingsExposeCustomWordsAndPrivacyPolicy() {
         let app = launchApp()
-        app.buttons["Settings"].tap()
+        app.buttons["home-settings"].tap()
 
         let customWordsButton = app.buttons.matching(
             NSPredicate(format: "label BEGINSWITH %@", "Custom Words")
