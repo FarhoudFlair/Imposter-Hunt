@@ -10,6 +10,8 @@ import SwiftUI
 /// The main role reveal screen with the flippable card
 struct RoleRevealView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
 
     let onBackToSettings: () -> Void
 
@@ -89,12 +91,24 @@ struct RoleRevealView: View {
             Spacer()
                 .frame(height: 30)
         }
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.isCardFlipped)
+        .animation(
+            reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8),
+            value: viewModel.isCardFlipped
+        )
         .onChange(of: viewModel.isCardFlipped) { _, isFlipped in
             isRoleSummaryFocused = isFlipped
         }
         .onAppear {
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.1)) {
+            if reduceMotion {
+                hasAppeared = true
+            } else {
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.1)) {
+                    hasAppeared = true
+                }
+            }
+        }
+        .onChange(of: reduceMotion) { _, shouldReduceMotion in
+            if shouldReduceMotion {
                 hasAppeared = true
             }
         }

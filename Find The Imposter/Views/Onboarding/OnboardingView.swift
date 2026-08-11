@@ -11,6 +11,8 @@ import SwiftUI
 struct OnboardingView: View {
     @Environment(GameViewModel.self) private var viewModel
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
 
     @State private var currentPage = 0
 
@@ -21,7 +23,7 @@ struct OnboardingView: View {
             OnboardingPage(
                 icon: "eye.fill",
                 iconColor: .purple,
-                title: "Find The Imposter",
+                title: "Imposter Hunt",
                 subtitle: "The Party Word Game",
                 description: "One player doesn't know the secret word. Can you find who it is before they blend in?"
             ),
@@ -30,7 +32,7 @@ struct OnboardingView: View {
                 iconColor: .blue,
                 title: "Strategic Hint System",
                 subtitle: "Only If Starts Mode",
-                description: "Only the starting imposter gets the category hint — creating real strategic tension and mind games."
+                description: "An imposter gets the category hint only when they are chosen to start the round — creating strategic tension and mind games."
             ),
             OnboardingPage(
                 icon: "face.smiling",
@@ -93,7 +95,10 @@ struct OnboardingView: View {
                                 .fill(currentPage == index ? Color.white : Color.white.opacity(0.3))
                                 .frame(width: 8, height: 8)
                                 .scaleEffect(currentPage == index ? 1.2 : 1.0)
-                                .animation(.spring(response: 0.3, dampingFraction: 0.7), value: currentPage)
+                                .animation(
+                                    reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.7),
+                                    value: currentPage
+                                )
                         }
                     }
 
@@ -105,8 +110,12 @@ struct OnboardingView: View {
                         .padding(.horizontal, Constants.largePadding)
                     } else {
                         PrimaryButton("Next", icon: "arrow.right") {
-                            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                            if reduceMotion {
                                 currentPage += 1
+                            } else {
+                                withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                    currentPage += 1
+                                }
                             }
                         }
                         .padding(.horizontal, Constants.largePadding)
