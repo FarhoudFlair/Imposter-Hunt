@@ -9,6 +9,8 @@ import SwiftUI
 
 /// The back of the role card with mystery pattern
 struct CardBackView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @State private var rotation: Double = 0
     @State private var shimmerPhase: CGFloat = 0
 
@@ -126,15 +128,28 @@ struct CardBackView: View {
                 )
         }
         .onAppear {
-            // Slow rotation animation
-            withAnimation(.linear(duration: 8).repeatForever(autoreverses: false)) {
-                rotation = 360
-            }
+            startAnimations()
+        }
+        .onChange(of: reduceMotion) { _, _ in
+            startAnimations()
+        }
+    }
 
-            // Shimmer animation
-            withAnimation(.linear(duration: 3).repeatForever(autoreverses: false)) {
-                shimmerPhase = 1
-            }
+    private func startAnimations() {
+        guard !reduceMotion else {
+            rotation = 0
+            shimmerPhase = 0
+            return
+        }
+
+        // Slow rotation animation
+        withAnimation(.linear(duration: 8).repeatForever(autoreverses: false)) {
+            rotation = 360
+        }
+
+        // Shimmer animation
+        withAnimation(.linear(duration: 3).repeatForever(autoreverses: false)) {
+            shimmerPhase = 1
         }
     }
 }

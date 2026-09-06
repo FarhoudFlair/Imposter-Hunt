@@ -10,6 +10,7 @@ import SwiftUI
 /// Main home screen with game title and start button
 struct HomeView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var titleScale: CGFloat = 0.8
     @State private var titleOpacity: Double = 0
@@ -122,9 +123,23 @@ struct HomeView: View {
         .onAppear {
             animateIn()
         }
+        .onChange(of: reduceMotion) { _, _ in
+            animateIn()
+        }
     }
 
     private func animateIn() {
+        guard !reduceMotion else {
+            titleScale = 1.0
+            titleOpacity = 1.0
+            subtitleOffset = 0
+            subtitleOpacity = 1.0
+            buttonOffset = 0
+            buttonOpacity = 1.0
+            eyeRotation = 0
+            return
+        }
+
         // Title and icon
         withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.1)) {
             titleScale = 1.0

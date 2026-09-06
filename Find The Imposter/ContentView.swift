@@ -10,6 +10,7 @@ import SwiftUI
 /// Root view that manages navigation between game phases
 struct ContentView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ZStack {
@@ -59,7 +60,10 @@ struct ContentView: View {
                         ))
                 }
             }
-            .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.gamePhase)
+            .animation(
+                reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8),
+                value: viewModel.gamePhase
+            )
         }
     }
 }

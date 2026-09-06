@@ -10,17 +10,29 @@ import SwiftUI
 extension View {
     /// Apply a bouncy spring animation
     func bouncy() -> some View {
-        self.animation(.spring(response: 0.4, dampingFraction: 0.6), value: UUID())
+        self.modifier(
+            ReducedMotionAnimationModifier(
+                animation: .spring(response: 0.4, dampingFraction: 0.6)
+            )
+        )
     }
 
     /// Apply a smooth spring animation
     func smoothSpring() -> some View {
-        self.animation(.spring(response: 0.5, dampingFraction: 0.8), value: UUID())
+        self.modifier(
+            ReducedMotionAnimationModifier(
+                animation: .spring(response: 0.5, dampingFraction: 0.8)
+            )
+        )
     }
 
     /// Apply card flip animation
     func cardFlipAnimation() -> some View {
-        self.animation(.spring(response: 0.6, dampingFraction: 0.7), value: UUID())
+        self.modifier(
+            ReducedMotionAnimationModifier(
+                animation: .spring(response: 0.6, dampingFraction: 0.7)
+            )
+        )
     }
 
     /// Add a subtle pulsing effect
@@ -51,41 +63,62 @@ extension View {
 
 // MARK: - Animation Modifiers
 
+struct ReducedMotionAnimationModifier: ViewModifier {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    let animation: Animation
+
+    func body(content: Content) -> some View {
+        content.animation(reduceMotion ? nil : animation, value: UUID())
+    }
+}
+
 struct PulsingModifier: ViewModifier {
     @State private var isPulsing = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     func body(content: Content) -> some View {
         content
-            .scaleEffect(isPulsing ? 1.05 : 1.0)
+            .scaleEffect(reduceMotion ? 1.0 : (isPulsing ? 1.05 : 1.0))
             .animation(
-                .easeInOut(duration: 1.0).repeatForever(autoreverses: true),
+                reduceMotion ? nil : .easeInOut(duration: 1.0).repeatForever(autoreverses: true),
                 value: isPulsing
             )
             .onAppear {
-                isPulsing = true
+                isPulsing = !reduceMotion
+            }
+            .onChange(of: reduceMotion) { _, shouldReduceMotion in
+                isPulsing = !shouldReduceMotion
             }
     }
 }
 
 struct FloatingModifier: ViewModifier {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let duration: Double
     let distance: CGFloat
     @State private var isFloating = false
 
     func body(content: Content) -> some View {
         content
-            .offset(y: isFloating ? -distance : distance)
+            .offset(y: reduceMotion ? 0 : (isFloating ? -distance : distance))
             .animation(
-                .easeInOut(duration: duration).repeatForever(autoreverses: true),
+                reduceMotion ? nil : .easeInOut(duration: duration).repeatForever(autoreverses: true),
                 value: isFloating
             )
             .onAppear {
-                isFloating = true
+                isFloating = !reduceMotion
+            }
+            .onChange(of: reduceMotion) { _, shouldReduceMotion in
+                isFloating = !shouldReduceMotion
             }
     }
 }
 
 struct ShimmerModifier: ViewModifier {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @State private var phase: CGFloat = 0
 
     func body(content: Content) -> some View {
@@ -107,20 +140,37 @@ struct ShimmerModifier: ViewModifier {
             )
             .mask(content)
             .onAppear {
-                withAnimation(.linear(duration: 2.0).repeatForever(autoreverses: false)) {
-                    phase = 1
-                }
+                startAnimation()
             }
+            .onChange(of: reduceMotion) { _, _ in
+                startAnimation()
+            }
+    }
+
+    private func startAnimation() {
+        guard !reduceMotion else {
+            phase = 0
+            return
+        }
+
+        withAnimation(.linear(duration: 2.0).repeatForever(autoreverses: false)) {
+            phase = 1
+        }
     }
 }
 
 // MARK: - Bounce Button Style
 
 struct BounceButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.spring(response: 0.2, dampingFraction: 0.6), value: configuration.isPressed)
+            .scaleEffect(reduceMotion ? 1.0 : (configuration.isPressed ? 0.95 : 1.0))
+            .animation(
+                reduceMotion ? nil : .spring(response: 0.2, dampingFraction: 0.6),
+                value: configuration.isPressed
+            )
     }
 }
 

@@ -10,6 +10,7 @@ import SwiftUI
 /// Container that manages the role reveal flow for all players
 struct RoleRevealContainerView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ZStack {
@@ -27,8 +28,14 @@ struct RoleRevealContainerView: View {
                     ))
             }
         }
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.showPassPhoneScreen)
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.currentRevealIndex)
+        .animation(
+            reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8),
+            value: viewModel.showPassPhoneScreen
+        )
+        .animation(
+            reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8),
+            value: viewModel.currentRevealIndex
+        )
     }
 }
 

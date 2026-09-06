@@ -9,6 +9,8 @@ import SwiftUI
 
 /// Animated gradient background with floating orbs
 struct AnimatedBackground: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @State private var animationPhase: CGFloat = 0
 
     var body: some View {
@@ -49,9 +51,21 @@ struct AnimatedBackground: View {
             .ignoresSafeArea()
         }
         .onAppear {
-            withAnimation(.linear(duration: 20).repeatForever(autoreverses: false)) {
-                animationPhase = 1
-            }
+            startAnimation()
+        }
+        .onChange(of: reduceMotion) { _, _ in
+            startAnimation()
+        }
+    }
+
+    private func startAnimation() {
+        guard !reduceMotion else {
+            animationPhase = 0
+            return
+        }
+
+        withAnimation(.linear(duration: 20).repeatForever(autoreverses: false)) {
+            animationPhase = 1
         }
     }
 

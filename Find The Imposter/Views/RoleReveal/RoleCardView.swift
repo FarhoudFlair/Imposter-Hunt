@@ -13,6 +13,7 @@ struct RoleCardView: View {
     let word: String
     let categoryName: String
     let showHint: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var hasAppeared = false
 
@@ -94,9 +95,23 @@ struct RoleCardView: View {
                 .strokeBorder(borderGradient, lineWidth: 3)
         }
         .onAppear {
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.7).delay(0.1)) {
+            revealContent()
+        }
+        .onChange(of: reduceMotion) { _, shouldReduceMotion in
+            if shouldReduceMotion {
                 hasAppeared = true
             }
+        }
+    }
+
+    private func revealContent() {
+        guard !reduceMotion else {
+            hasAppeared = true
+            return
+        }
+
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.7).delay(0.1)) {
+            hasAppeared = true
         }
     }
 

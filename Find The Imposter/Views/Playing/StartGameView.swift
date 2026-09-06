@@ -10,6 +10,7 @@ import SwiftUI
 /// Screen shown after all players have revealed, indicating who starts
 struct StartGameView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var iconScale: CGFloat = 0.5
     @State private var iconOpacity: Double = 0
@@ -104,6 +105,9 @@ struct StartGameView: View {
         .onAppear {
             animateIn()
         }
+        .onChange(of: reduceMotion) { _, _ in
+            animateIn()
+        }
     }
 
     private var startingPlayerName: String {
@@ -112,6 +116,16 @@ struct StartGameView: View {
     }
 
     private func animateIn() {
+        guard !reduceMotion else {
+            iconScale = 1.0
+            iconOpacity = 1.0
+            textOffset = 0
+            textOpacity = 1.0
+            instructionsOpacity = 1.0
+            buttonOpacity = 1.0
+            return
+        }
+
         withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.1)) {
             iconScale = 1.0
             iconOpacity = 1.0

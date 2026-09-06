@@ -10,6 +10,7 @@ import SwiftUI
 /// The final word reveal with celebration
 struct WordRevealView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var hasAppeared = false
     @State private var wordScale: CGFloat = 0.5
@@ -86,23 +87,39 @@ struct WordRevealView: View {
             }
             .opacity(hasAppeared ? 1.0 : 0)
         }
-        .overlay(
-            // Confetti overlay
-            ConfettiView(trigger: confettiTrigger)
-        )
+        .overlay {
+            if !reduceMotion {
+                ConfettiView(trigger: confettiTrigger)
+            }
+        }
         .onAppear {
-            withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.1)) {
-                hasAppeared = true
-            }
+            startAnimations()
+        }
+        .onChange(of: reduceMotion) { _, _ in
+            startAnimations()
+        }
+    }
 
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.5).delay(0.3)) {
-                wordScale = 1.0
-            }
+    private func startAnimations() {
+        guard !reduceMotion else {
+            hasAppeared = true
+            wordScale = 1.0
+            confettiTrigger = false
+            return
+        }
 
-            // Trigger confetti
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                confettiTrigger = true
-            }
+        withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.1)) {
+            hasAppeared = true
+        }
+
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.5).delay(0.3)) {
+            wordScale = 1.0
+        }
+
+        // Trigger confetti
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            guard !reduceMotion else { return }
+            confettiTrigger = true
         }
     }
 }

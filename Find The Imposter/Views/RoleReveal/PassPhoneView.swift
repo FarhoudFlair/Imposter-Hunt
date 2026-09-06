@@ -10,6 +10,7 @@ import SwiftUI
 /// Screen shown between players to pass the phone
 struct PassPhoneView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var iconScale: CGFloat = 0.5
     @State private var iconOpacity: Double = 0
@@ -103,6 +104,9 @@ struct PassPhoneView: View {
         .onAppear {
             animateIn()
         }
+        .onChange(of: reduceMotion) { _, _ in
+            animateIn()
+        }
     }
 
     private func progressColor(for index: Int) -> Color {
@@ -116,6 +120,17 @@ struct PassPhoneView: View {
     }
 
     private func animateIn() {
+        guard !reduceMotion else {
+            iconScale = 1.0
+            iconOpacity = 1.0
+            textOffset = 0
+            textOpacity = 1.0
+            buttonOffset = 0
+            buttonOpacity = 1.0
+            phoneRotation = 0
+            return
+        }
+
         // Reset animation state
         iconScale = 0.5
         iconOpacity = 0
