@@ -10,17 +10,32 @@ import SwiftUI
 /// Modifier that adds a bouncy entrance animation
 struct BouncyEntranceModifier: ViewModifier {
     @State private var hasAppeared = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let delay: Double
 
     func body(content: Content) -> some View {
         content
-            .scaleEffect(hasAppeared ? 1.0 : 0.5)
-            .opacity(hasAppeared ? 1.0 : 0.0)
+            .scaleEffect(reduceMotion ? 1.0 : (hasAppeared ? 1.0 : 0.5))
+            .opacity(reduceMotion ? 1.0 : (hasAppeared ? 1.0 : 0.0))
             .onAppear {
-                withAnimation(.spring(response: 0.5, dampingFraction: 0.6).delay(delay)) {
+                appear()
+            }
+            .onChange(of: reduceMotion) { _, shouldReduceMotion in
+                if shouldReduceMotion {
                     hasAppeared = true
                 }
             }
+    }
+
+    private func appear() {
+        guard !reduceMotion else {
+            hasAppeared = true
+            return
+        }
+
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.6).delay(delay)) {
+            hasAppeared = true
+        }
     }
 }
 
@@ -29,50 +44,95 @@ struct StaggeredAnimationModifier: ViewModifier {
     let index: Int
     let baseDelay: Double
     @State private var hasAppeared = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     func body(content: Content) -> some View {
         content
-            .offset(y: hasAppeared ? 0 : 20)
-            .opacity(hasAppeared ? 1.0 : 0.0)
+            .offset(y: reduceMotion ? 0 : (hasAppeared ? 0 : 20))
+            .opacity(reduceMotion ? 1.0 : (hasAppeared ? 1.0 : 0.0))
             .onAppear {
-                withAnimation(.spring(response: 0.4, dampingFraction: 0.7).delay(baseDelay + Double(index) * 0.05)) {
+                appear()
+            }
+            .onChange(of: reduceMotion) { _, shouldReduceMotion in
+                if shouldReduceMotion {
                     hasAppeared = true
                 }
             }
+    }
+
+    private func appear() {
+        guard !reduceMotion else {
+            hasAppeared = true
+            return
+        }
+
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.7).delay(baseDelay + Double(index) * 0.05)) {
+            hasAppeared = true
+        }
     }
 }
 
 /// Modifier for scale-in animation
 struct ScaleInModifier: ViewModifier {
     @State private var hasAppeared = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let delay: Double
 
     func body(content: Content) -> some View {
         content
-            .scaleEffect(hasAppeared ? 1.0 : 0.8)
-            .opacity(hasAppeared ? 1.0 : 0.0)
+            .scaleEffect(reduceMotion ? 1.0 : (hasAppeared ? 1.0 : 0.8))
+            .opacity(reduceMotion ? 1.0 : (hasAppeared ? 1.0 : 0.0))
             .onAppear {
-                withAnimation(.easeOut(duration: 0.3).delay(delay)) {
+                appear()
+            }
+            .onChange(of: reduceMotion) { _, shouldReduceMotion in
+                if shouldReduceMotion {
                     hasAppeared = true
                 }
             }
+    }
+
+    private func appear() {
+        guard !reduceMotion else {
+            hasAppeared = true
+            return
+        }
+
+        withAnimation(.easeOut(duration: 0.3).delay(delay)) {
+            hasAppeared = true
+        }
     }
 }
 
 /// Modifier for slide-up animation
 struct SlideUpModifier: ViewModifier {
     @State private var hasAppeared = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let delay: Double
 
     func body(content: Content) -> some View {
         content
-            .offset(y: hasAppeared ? 0 : 30)
-            .opacity(hasAppeared ? 1.0 : 0.0)
+            .offset(y: reduceMotion ? 0 : (hasAppeared ? 0 : 30))
+            .opacity(reduceMotion ? 1.0 : (hasAppeared ? 1.0 : 0.0))
             .onAppear {
-                withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(delay)) {
+                appear()
+            }
+            .onChange(of: reduceMotion) { _, shouldReduceMotion in
+                if shouldReduceMotion {
                     hasAppeared = true
                 }
             }
+    }
+
+    private func appear() {
+        guard !reduceMotion else {
+            hasAppeared = true
+            return
+        }
+
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(delay)) {
+            hasAppeared = true
+        }
     }
 }
 
