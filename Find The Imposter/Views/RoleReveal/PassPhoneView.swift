@@ -10,6 +10,10 @@ import SwiftUI
 /// Screen shown between players to pass the phone
 struct PassPhoneView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+
+    let onBackToSettings: () -> Void
 
     @State private var iconScale: CGFloat = 0.5
     @State private var iconOpacity: Double = 0
@@ -18,6 +22,10 @@ struct PassPhoneView: View {
     @State private var buttonOffset: CGFloat = 30
     @State private var buttonOpacity: Double = 0
     @State private var phoneRotation: Double = 0
+
+    init(onBackToSettings: @escaping () -> Void = {}) {
+        self.onBackToSettings = onBackToSettings
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -89,9 +97,17 @@ struct PassPhoneView: View {
             Spacer()
             Spacer()
 
-            // Ready Button
-            PrimaryButton("I'm Ready", icon: "hand.tap.fill") {
-                viewModel.playerReady()
+            // Navigation Buttons
+            VStack(spacing: 12) {
+                PrimaryButton("I'm Ready", icon: "hand.tap.fill") {
+                    viewModel.playerReady()
+                }
+                .accessibilityIdentifier("pass-phone-ready")
+
+                SecondaryButton("Back to Settings", icon: "arrow.left") {
+                    onBackToSettings()
+                }
+                .accessibilityIdentifier("back-to-settings")
             }
             .padding(.horizontal, Constants.largePadding)
             .offset(y: buttonOffset)
@@ -101,6 +117,9 @@ struct PassPhoneView: View {
                 .frame(height: 50)
         }
         .onAppear {
+            animateIn()
+        }
+        .onChange(of: reduceMotion) { _, _ in
             animateIn()
         }
     }
@@ -116,6 +135,17 @@ struct PassPhoneView: View {
     }
 
     private func animateIn() {
+        if reduceMotion {
+            iconScale = 1.0
+            iconOpacity = 1.0
+            textOffset = 0
+            textOpacity = 1.0
+            buttonOffset = 0
+            buttonOpacity = 1.0
+            phoneRotation = 0
+            return
+        }
+
         // Reset animation state
         iconScale = 0.5
         iconOpacity = 0

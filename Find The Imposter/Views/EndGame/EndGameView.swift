@@ -10,6 +10,8 @@ import SwiftUI
 /// End game screen with sequential reveals
 struct EndGameView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
 
     var body: some View {
         VStack(spacing: 0) {
@@ -55,17 +57,30 @@ struct EndGameView: View {
             Spacer()
                 .frame(height: 50)
         }
-        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: viewModel.showImposterReveal)
-        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: viewModel.showWordReveal)
+        .animation(
+            reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.8),
+            value: viewModel.showImposterReveal
+        )
+        .animation(
+            reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.8),
+            value: viewModel.showWordReveal
+        )
     }
 }
 
 /// Initial state before any reveals
 struct ReadyToRevealView: View {
+    @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let onReveal: () -> Void
 
     @State private var hasAppeared = false
     @State private var pulseScale: CGFloat = 1.0
+
+    private var multipleImposters: Bool {
+        viewModel.imposters.count > 1
+    }
 
     var body: some View {
         VStack(spacing: 32) {
@@ -104,7 +119,9 @@ struct ReadyToRevealView: View {
                     .font(.system(size: 36, weight: .bold))
                     .foregroundStyle(.white)
 
-                Text("Ready to see who the imposter was?")
+                Text(multipleImposters
+                     ? "Ready to see who the imposters were?"
+                     : "Ready to see who the imposter was?")
                     .font(.title3)
                     .foregroundStyle(.white.opacity(0.7))
                     .multilineTextAlignment(.center)
@@ -113,7 +130,10 @@ struct ReadyToRevealView: View {
             .offset(y: hasAppeared ? 0 : 20)
 
             // Reveal Button
-            PrimaryButton("Reveal Imposter", icon: "eye.fill") {
+            PrimaryButton(
+                multipleImposters ? "Reveal Imposters" : "Reveal Imposter",
+                icon: "eye.fill"
+            ) {
                 onReveal()
             }
             .padding(.horizontal, 40)
@@ -121,13 +141,26 @@ struct ReadyToRevealView: View {
             .offset(y: hasAppeared ? 0 : 30)
         }
         .onAppear {
-            withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.1)) {
-                hasAppeared = true
-            }
+            startAnimations()
+        }
+        .onChange(of: reduceMotion) { _, _ in
+            startAnimations()
+        }
+    }
 
-            withAnimation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true)) {
-                pulseScale = 1.1
-            }
+    private func startAnimations() {
+        guard !reduceMotion else {
+            hasAppeared = true
+            pulseScale = 1.0
+            return
+        }
+
+        withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.1)) {
+            hasAppeared = true
+        }
+
+        withAnimation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true)) {
+            pulseScale = 1.1
         }
     }
 }

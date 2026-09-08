@@ -10,6 +10,8 @@ import SwiftUI
 /// Main home screen with game title and start button
 struct HomeView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
 
     @State private var titleScale: CGFloat = 0.8
     @State private var titleOpacity: Double = 0
@@ -20,97 +22,103 @@ struct HomeView: View {
     @State private var eyeRotation: Double = 0
 
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: 0) {
+                    Spacer(minLength: 24)
 
-            // Logo and Title Section
-            VStack(spacing: 20) {
-                // Animated Eye Icon
-                ZStack {
-                    // Glow effect
-                    Circle()
-                        .fill(
-                            RadialGradient(
-                                colors: [.purple.opacity(0.4), .clear],
-                                center: .center,
-                                startRadius: 20,
-                                endRadius: 100
-                            )
-                        )
-                        .frame(width: 200, height: 200)
-                        .blur(radius: 30)
+                    // Logo and Title Section
+                    VStack(spacing: 20) {
+                        // Animated Eye Icon
+                        ZStack {
+                            // Glow effect
+                            Circle()
+                                .fill(
+                                    RadialGradient(
+                                        colors: [.purple.opacity(0.4), .clear],
+                                        center: .center,
+                                        startRadius: 20,
+                                        endRadius: 100
+                                    )
+                                )
+                                .frame(width: 200, height: 200)
+                                .blur(radius: 30)
 
-                    // Eye icon
-                    Image(systemName: "eye.trianglebadge.exclamationmark.fill")
-                        .font(.system(size: 80))
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.purple, .pink, .orange],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .shadow(color: .purple.opacity(0.5), radius: 15)
-                        .rotationEffect(.degrees(eyeRotation))
+                            // Eye icon
+                            Image(systemName: "eye.trianglebadge.exclamationmark.fill")
+                                .font(.system(size: 80))
+                                .foregroundStyle(
+                                    LinearGradient(
+                                        colors: [.purple, .pink, .orange],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .shadow(color: .purple.opacity(0.5), radius: 15)
+                                .rotationEffect(.degrees(eyeRotation))
+                        }
+                        .scaleEffect(titleScale)
+                        .opacity(titleOpacity)
+
+                        // Title
+                        VStack(spacing: 8) {
+                            Text("IMPOSTER")
+                                .font(.title2)
+                                .fontWeight(.medium)
+                                .foregroundStyle(.white.opacity(0.8))
+
+                            Text("HUNT")
+                                .font(.system(size: 48, weight: .black))
+                                .foregroundStyle(
+                                    LinearGradient(
+                                        colors: [.white, .purple.opacity(0.8)],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .shadow(color: .purple.opacity(0.5), radius: 10)
+                        }
+                        .scaleEffect(titleScale)
+                        .opacity(titleOpacity)
+
+                        // Subtitle
+                        Text("The Ultimate Party Word Game")
+                            .font(.subheadline)
+                            .foregroundStyle(.white.opacity(0.6))
+                            .offset(y: subtitleOffset)
+                            .opacity(subtitleOpacity)
+
+                        // Creator Credit
+                        Text("Created by Farhoud Talebi")
+                            .font(.caption2)
+                            .foregroundStyle(.white.opacity(0.4))
+                            .offset(y: subtitleOffset)
+                            .opacity(subtitleOpacity)
+                    }
+
+                    Spacer(minLength: 32)
+
+                    // Buttons Section
+                    VStack(spacing: 16) {
+                        PrimaryButton("Start Game", icon: "play.fill") {
+                            viewModel.startNewGame()
+                        }
+                        .accessibilityIdentifier("home-start-game")
+
+                        SecondaryButton("Settings", icon: "gearshape.fill") {
+                            viewModel.showSettings = true
+                        }
+                        .accessibilityIdentifier("home-settings")
+                    }
+                    .padding(.horizontal, Constants.largePadding)
+                    .offset(y: buttonOffset)
+                    .opacity(buttonOpacity)
+                    .padding(.bottom, 24)
                 }
-                .scaleEffect(titleScale)
-                .opacity(titleOpacity)
-
-                // Title
-                VStack(spacing: 8) {
-                    Text("IMPOSTER")
-                        .font(.title2)
-                        .fontWeight(.medium)
-                        .foregroundStyle(.white.opacity(0.8))
-
-                    Text("HUNT")
-                        .font(.system(size: 48, weight: .black))
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.white, .purple.opacity(0.8)],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
-                        .shadow(color: .purple.opacity(0.5), radius: 10)
-                }
-                .scaleEffect(titleScale)
-                .opacity(titleOpacity)
-
-                // Subtitle
-                Text("The Ultimate Party Word Game")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.6))
-                    .offset(y: subtitleOffset)
-                    .opacity(subtitleOpacity)
-
-                // Creator Credit
-                Text("Created by Farhoud Talebi")
-                    .font(.caption2)
-                    .foregroundStyle(.white.opacity(0.4))
-                    .offset(y: subtitleOffset)
-                    .opacity(subtitleOpacity)
+                .frame(maxWidth: .infinity)
+                .frame(minHeight: geometry.size.height)
             }
-
-            Spacer()
-            Spacer()
-
-            // Buttons Section
-            VStack(spacing: 16) {
-                PrimaryButton("Start Game", icon: "play.fill") {
-                    viewModel.startNewGame()
-                }
-
-                SecondaryButton("Settings", icon: "gearshape.fill") {
-                    viewModel.showSettings = true
-                }
-            }
-            .padding(.horizontal, Constants.largePadding)
-            .offset(y: buttonOffset)
-            .opacity(buttonOpacity)
-
-            Spacer()
-                .frame(height: 50)
+            .scrollIndicators(.hidden)
         }
         .sheet(isPresented: Binding(
             get: { viewModel.showSettings },
@@ -122,9 +130,23 @@ struct HomeView: View {
         .onAppear {
             animateIn()
         }
+        .onChange(of: reduceMotion) { _, _ in
+            animateIn()
+        }
     }
 
     private func animateIn() {
+        guard !reduceMotion else {
+            titleScale = 1.0
+            titleOpacity = 1.0
+            subtitleOffset = 0
+            subtitleOpacity = 1.0
+            buttonOffset = 0
+            buttonOpacity = 1.0
+            eyeRotation = 0
+            return
+        }
+
         // Title and icon
         withAnimation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.1)) {
             titleScale = 1.0

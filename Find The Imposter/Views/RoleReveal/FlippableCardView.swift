@@ -9,6 +9,8 @@ import SwiftUI
 
 /// A card that flips with a 3D rotation animation controlled by swipe gesture
 struct FlippableCardView<Front: View, Back: View>: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let front: Front
     let back: Back
     @Binding var isFlipped: Bool
@@ -34,13 +36,16 @@ struct FlippableCardView<Front: View, Back: View>: View {
             let cardHeight = min(geometry.size.height - 40, Constants.cardMaxHeight)
 
             // Calculate effective rotation (base + drag contribution)
-            let effectiveRotation = min(maxDragRotation, max(0, rotation + abs(Double(dragTranslation)) * rotationSensitivity))
+            let effectiveRotation = reduceMotion
+                ? rotation
+                : min(maxDragRotation, max(0, rotation + abs(Double(dragTranslation)) * rotationSensitivity))
 
             ZStack {
                 // Back of card (mystery side) - visible when rotation < 90
                 back
                     .frame(width: cardWidth, height: cardHeight)
                     .opacity(effectiveRotation < 90 ? 1 : 0)
+                    .accessibilityHidden(effectiveRotation >= 90)
 
                 // Front of card (role reveal side) - visible when rotation >= 90
                 front
@@ -50,6 +55,7 @@ struct FlippableCardView<Front: View, Back: View>: View {
                         axis: (x: 0, y: 1, z: 0)
                     )
                     .opacity(effectiveRotation >= 90 ? 1 : 0)
+                    .accessibilityHidden(effectiveRotation < 90)
             }
             .rotation3DEffect(
                 .degrees(effectiveRotation),
@@ -60,11 +66,11 @@ struct FlippableCardView<Front: View, Back: View>: View {
             )
             // Subtle Z-axis tilt for more realistic feel
             .rotation3DEffect(
-                .degrees(isDragging ? Double(dragTranslation) * 0.015 : 0),
+                .degrees(isDragging && !reduceMotion ? Double(dragTranslation) * 0.015 : 0),
                 axis: (x: 0, y: 0, z: 1)
             )
             // Slight scale effect when dragging
-            .scaleEffect(isDragging ? 1.02 : 1.0)
+            .scaleEffect(isDragging && !reduceMotion ? 1.02 : 1.0)
             .frame(width: geometry.size.width, height: geometry.size.height)
             .gesture(
                 DragGesture()
@@ -82,6 +88,9 @@ struct FlippableCardView<Front: View, Back: View>: View {
                         if finalRotation >= commitThreshold {
                             // Commit the flip - animate to 180
                             completeFlip()
+                        } else if reduceMotion {
+                            // Snap back directly when motion is reduced
+                            dragTranslation = 0
                         } else {
                             // Snap back - animate to 0
                             withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
@@ -92,20 +101,39 @@ struct FlippableCardView<Front: View, Back: View>: View {
             )
             .onChange(of: isFlipped) { _, newValue in
                 if newValue && rotation < 180 {
-                    completeFlip()
+                    completeFlip(notify: false)
                 } else if !newValue {
                     // Reset when isFlipped becomes false
-                    withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                    if reduceMotion {
                         rotation = 0
                         dragTranslation = 0
+                    } else {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                            rotation = 0
+                            dragTranslation = 0
+                        }
                     }
                 }
             }
-            .animation(.interactiveSpring(response: 0.3, dampingFraction: 0.8), value: isDragging)
+            .animation(
+                reduceMotion ? nil : .interactiveSpring(response: 0.3, dampingFraction: 0.8),
+                value: isDragging
+            )
         }
     }
 
-    private func completeFlip() {
+    private func completeFlip(notify: Bool = true) {
+        if reduceMotion {
+            rotation = 180
+            dragTranslation = 0
+
+            if notify {
+                isFlipped = true
+                onFlip?()
+            }
+            return
+        }
+
         // Calculate remaining rotation needed
         let currentRotation = rotation + abs(Double(dragTranslation)) * rotationSensitivity
         let remainingRotation = 180 - currentRotation
@@ -116,9 +144,12 @@ struct FlippableCardView<Front: View, Back: View>: View {
         withAnimation(.spring(response: duration, dampingFraction: 0.75)) {
             rotation = 180
             dragTranslation = 0
-            isFlipped = true
         }
-        onFlip?()
+
+        if notify {
+            isFlipped = true
+            onFlip?()
+        }
     }
 }
 

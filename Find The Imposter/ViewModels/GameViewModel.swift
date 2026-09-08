@@ -10,6 +10,49 @@ import SwiftUI
 /// Central state manager for the game
 @Observable
 class GameViewModel {
+    enum PlayerSetupValidation: Equatable {
+        case valid
+        case notEnoughPlayers
+        case blankName
+        case duplicateName
+        case nameTooLong
+
+        var message: String? {
+            switch self {
+            case .valid:
+                return nil
+            case .notEnoughPlayers:
+                return "Add at least \(Constants.minPlayers) players"
+            case .blankName:
+                return "Enter a name for every player"
+            case .duplicateName:
+                return "Player names must be unique"
+            case .nameTooLong:
+                return "Keep names to \(Constants.maxPlayerNameLength) characters or fewer"
+            }
+        }
+    }
+
+    enum GameStartValidation: Equatable {
+        case ready
+        case noDifficulty
+        case noCategory
+        case noAvailableWords
+
+        var message: String? {
+            switch self {
+            case .ready:
+                return nil
+            case .noDifficulty:
+                return "Select at least one difficulty"
+            case .noCategory:
+                return "Select at least one category"
+            case .noAvailableWords:
+                return "No words match the selected settings"
+            }
+        }
+    }
+
     // MARK: - Game State
 
     var gamePhase: GamePhase = .home
@@ -35,18 +78,23 @@ class GameViewModel {
     let wordDataService: WordDataService
     let audioService: AudioService
     let hapticsService: HapticsService
+    let customWordService: CustomWordService
 
     // MARK: - Initialization
 
-    init() {
-        self.settings = GameSettings()
-        self.wordDataService = WordDataService()
-        self.audioService = AudioService()
-        self.hapticsService = HapticsService()
-
-        // Sync service states with settings
-        audioService.isEnabled = settings.soundEnabled
-        hapticsService.isEnabled = settings.hapticsEnabled
+    init(
+        settings: GameSettings = GameSettings(),
+        wordDataService: WordDataService = WordDataService(),
+        audioService: AudioService = AudioService(),
+        hapticsService: HapticsService = HapticsService(),
+        customWordService: CustomWordService = CustomWordService()
+    ) {
+        self.settings = settings
+        self.wordDataService = wordDataService
+        self.audioService = audioService
+        self.hapticsService = hapticsService
+        self.customWordService = customWordService
+        syncSettingsToServices()
     }
 
     // MARK: - Computed Properties
@@ -73,9 +121,27 @@ class GameViewModel {
         return players[startingPlayerIndex]
     }
 
-    /// Checks if players are ready to proceed to game settings (enough players with names)
+    var playerSetupValidation: PlayerSetupValidation {
+        guard players.count >= Constants.minPlayers else { return .notEnoughPlayers }
+
+        let names = players.map(\.trimmedName)
+        guard names.allSatisfy({ !$0.isEmpty }) else { return .blankName }
+        guard names.allSatisfy({ $0.count <= Constants.maxPlayerNameLength }) else { return .nameTooLong }
+
+        for (index, name) in names.enumerated() {
+            let hasDuplicate = names[..<index].contains {
+                $0.localizedCaseInsensitiveCompare(name) == .orderedSame
+            }
+            if hasDuplicate {
+                return .duplicateName
+            }
+        }
+
+        return .valid
+    }
+
     var canProceedToGameSettings: Bool {
-        players.count >= 3 && players.allSatisfy { !$0.name.trimmingCharacters(in: .whitespaces).isEmpty }
+        playerSetupValidation == .valid
     }
 
     var maxImposters: Int {
@@ -98,18 +164,20 @@ class GameViewModel {
         }
     }
 
-    /// Returns true if game can start (has valid difficulty and category selections with available words)
+    /// A hint is displayable only when the current word has a real built-in category.
+    func shouldShowCategoryHint(for player: Player) -> Bool {
+        selectedCategory != nil && imposterGetsHint(for: player)
+    }
+
+    var gameStartValidation: GameStartValidation {
+        guard settings.hasDifficultySelected else { return .noDifficulty }
+        guard settings.hasCategorySelected else { return .noCategory }
+        guard availableWordCount() > 0 else { return .noAvailableWords }
+        return .ready
+    }
+
     var canStartGame: Bool {
-        // Must have at least one difficulty selected
-        guard !settings.selectedDifficulties.isEmpty else { return false }
-
-        // Must have at least one category selected
-        guard !settings.selectedCategoryIds.isEmpty else { return false }
-
-        return wordDataService.totalWordCount(
-            categoryIds: settings.selectedCategoryIds,
-            difficulties: settings.selectedDifficulties
-        ) > 0
+        gameStartValidation == .ready
     }
 
     /// Deprecated: Use canStartGame instead
@@ -117,16 +185,39 @@ class GameViewModel {
         canStartGame
     }
 
+    /// Total words available for the current category + difficulty selection (includes My Words)
+    func availableWordCount() -> Int {
+        guard !settings.selectedDifficulties.isEmpty else { return 0 }
+        guard !settings.selectedCategoryIds.isEmpty else { return 0 }
+
+        let customId = CustomWordService.customCategoryId
+        let regularCategoryIds = settings.selectedCategoryIds.filter { $0 != customId }
+
+        var count = 0
+        if !regularCategoryIds.isEmpty {
+            count += wordDataService.totalWordCount(
+                categoryIds: regularCategoryIds,
+                difficulties: settings.selectedDifficulties
+            )
+        }
+
+        if settings.selectedCategoryIds.contains(customId) {
+            count += customWordService.wordStrings(for: settings.selectedDifficulties).count
+        }
+
+        return count
+    }
+
     // MARK: - Player Management
 
     func addPlayer() {
-        guard players.count < 12 else { return }
+        guard players.count < Constants.maxPlayers else { return }
         players.append(Player(name: ""))
         hapticsService.lightTap()
     }
 
     func removePlayer(at index: Int) {
-        guard players.count > 3, index < players.count else { return }
+        guard players.count > Constants.minPlayers, index < players.count else { return }
         players.remove(at: index)
         // Adjust imposter count if needed
         if imposterCount > maxImposters {
@@ -143,7 +234,7 @@ class GameViewModel {
     // MARK: - Game Flow
 
     func startNewGame() {
-        players = (0..<3).map { _ in Player(name: "") }
+        players = (0..<Constants.defaultPlayerCount).map { _ in Player(name: "") }
         imposterCount = 1
         gamePhase = .playerSetup
         audioService.play(.buttonTap)
@@ -151,7 +242,10 @@ class GameViewModel {
     }
 
     func proceedToSettings() {
-        guard canStartGame else { return }
+        guard canProceedToGameSettings else { return }
+        for index in players.indices {
+            players[index].name = players[index].trimmedName
+        }
         gamePhase = .gameSettings
         audioService.play(.buttonTap)
         hapticsService.lightTap()
@@ -164,7 +258,19 @@ class GameViewModel {
     }
 
     func beginRoleReveal() {
+        guard canStartGame else {
+            hapticsService.warning()
+            return
+        }
+
         assignRoles()
+
+        // Do not enter reveal if no word could be selected
+        guard !selectedWord.isEmpty else {
+            hapticsService.warning()
+            return
+        }
+
         selectStartingPlayer()
         currentRevealIndex = 0
         showPassPhoneScreen = true
@@ -188,26 +294,73 @@ class GameViewModel {
             players[shuffledIndices[i]].isImposter = true
         }
 
-        // Select random word from selected categories and difficulties
-        if let result = wordDataService.getRandomWord(
-            from: settings.selectedCategoryIds,
-            difficulties: settings.selectedDifficulties
-        ) {
-            selectedWord = result.word
-            selectedCategory = result.category
+        // Build word pool from selected categories + difficulties (including My Words)
+        let customCategoryId = CustomWordService.customCategoryId
+        let hasCustomSelected = settings.selectedCategoryIds.contains(customCategoryId)
+        let regularCategoryIds = settings.selectedCategoryIds.filter { $0 != customCategoryId }
+
+        var wordPool: [(word: String, category: Category?)] = []
+
+        if !regularCategoryIds.isEmpty {
+            let filteredCategories = wordDataService.categories.filter { regularCategoryIds.contains($0.id) }
+            for category in filteredCategories {
+                for difficulty in settings.selectedDifficulties {
+                    for word in category.words(for: difficulty) {
+                        wordPool.append((word: word, category: category))
+                    }
+                }
+            }
+        }
+
+        if hasCustomSelected {
+            // Tag-driven hint: a custom word reveals its own category, never "My Words",
+            // which would tell the imposter the answer is in the user's short custom list.
+            // Untagged words carry a nil category, so the imposter simply gets no hint.
+            for custom in customWordService.words(for: settings.selectedDifficulties) {
+                let taggedCategory = custom.categoryId.flatMap { id in
+                    wordDataService.categories.first { $0.id == id }
+                }
+                wordPool.append((word: custom.word, category: taggedCategory))
+            }
+        }
+
+        if let selected = wordPool.randomElement() {
+            selectedWord = selected.word
+            selectedCategory = selected.category
+        } else {
+            selectedWord = ""
+            selectedCategory = nil
         }
     }
 
     func selectStartingPlayer() {
-        // Prefer non-imposter to start
-        let nonImposterIndices = players.indices.filter { !players[$0].isImposter }
+        var generator = SystemRandomNumberGenerator()
+        selectStartingPlayer(using: &generator)
+    }
 
-        if let randomIndex = nonImposterIndices.randomElement() {
-            startingPlayerIndex = randomIndex
-        } else {
-            // All are imposters (shouldn't happen with proper validation)
-            startingPlayerIndex = players.indices.randomElement() ?? 0
+    func selectStartingPlayer<R: RandomNumberGenerator>(using generator: inout R) {
+        guard !players.isEmpty else {
+            startingPlayerIndex = 0
+            return
         }
+        startingPlayerIndex = Int.random(in: players.indices, using: &generator)
+    }
+
+    func cancelRoleReveal() {
+        for index in players.indices {
+            players[index].isImposter = false
+            players[index].hasRevealedRole = false
+        }
+        currentRevealIndex = 0
+        selectedWord = ""
+        selectedCategory = nil
+        startingPlayerIndex = 0
+        isCardFlipped = false
+        showPassPhoneScreen = true
+        showImposterReveal = false
+        showWordReveal = false
+        cameFromEndGame = false
+        gamePhase = .gameSettings
     }
 
     func playerReady() {

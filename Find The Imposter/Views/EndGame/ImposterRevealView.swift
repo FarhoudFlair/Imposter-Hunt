@@ -10,6 +10,8 @@ import SwiftUI
 /// Dramatic imposter reveal animation
 struct ImposterRevealView: View {
     @Environment(GameViewModel.self) private var viewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let onContinue: () -> Void
 
     @State private var hasAppeared = false
@@ -82,25 +84,39 @@ struct ImposterRevealView: View {
             .offset(y: hasAppeared ? 0 : 30)
         }
         .onAppear {
-            // Initial dramatic entrance
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.5).delay(0.1)) {
-                hasAppeared = true
-            }
+            startAnimations()
+        }
+        .onChange(of: reduceMotion) { _, _ in
+            startAnimations()
+        }
+    }
 
-            // Shake effect
-            withAnimation(.linear(duration: 0.05).repeatCount(8, autoreverses: true).delay(0.1)) {
-                shakeOffset = 8
-            }
+    private func startAnimations() {
+        guard !reduceMotion else {
+            hasAppeared = true
+            shakeOffset = 0
+            glowOpacity = 0.6
+            return
+        }
 
-            // Reset shake
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                shakeOffset = 0
-            }
+        // Initial dramatic entrance
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.5).delay(0.1)) {
+            hasAppeared = true
+        }
 
-            // Pulsing glow
-            withAnimation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true).delay(0.5)) {
-                glowOpacity = 0.8
-            }
+        // Shake effect
+        withAnimation(.linear(duration: 0.05).repeatCount(8, autoreverses: true).delay(0.1)) {
+            shakeOffset = 8
+        }
+
+        // Reset shake
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            shakeOffset = 0
+        }
+
+        // Pulsing glow
+        withAnimation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true).delay(0.5)) {
+            glowOpacity = 0.8
         }
     }
 }

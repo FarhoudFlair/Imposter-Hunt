@@ -40,8 +40,7 @@ struct CategoryPickerView: View {
                 Spacer()
 
                 Button {
-                    let allIds = Set(viewModel.wordDataService.categories.map { $0.id })
-                    viewModel.settings.selectAllCategories(allIds: allIds)
+                    viewModel.settings.selectAllCategories(allIds: allSelectableCategoryIds)
                     viewModel.hapticsService.selection()
                 } label: {
                     Text(allSelected ? "All Selected" : "Select All")
@@ -72,6 +71,18 @@ struct CategoryPickerView: View {
             // Category Grid
             if isExpanded {
                 LazyVGrid(columns: columns, spacing: 10) {
+                    // My Words category (if custom words exist)
+                    if viewModel.customWordService.hasWords {
+                        CustomCategoryChip(
+                            wordCount: viewModel.customWordService.wordCount,
+                            isSelected: isCustomCategorySelected,
+                            onTap: {
+                                toggleCategory(CustomWordService.customCategoryId)
+                            }
+                        )
+                    }
+
+                    // Regular categories
                     ForEach(viewModel.wordDataService.categories) { category in
                         CategoryChip(
                             category: category,
@@ -87,23 +98,42 @@ struct CategoryPickerView: View {
         }
         .onAppear {
             initializeCategoriesIfNeeded()
+            pruneStaleCustomSelection()
+        }
+        .onChange(of: viewModel.customWordService.hasWords) { _, hasWords in
+            if !hasWords {
+                pruneStaleCustomSelection()
+            }
         }
     }
 
+    private var allSelectableCategoryIds: Set<String> {
+        var ids = Set(viewModel.wordDataService.categories.map { $0.id })
+        if viewModel.customWordService.hasWords {
+            ids.insert(CustomWordService.customCategoryId)
+        }
+        return ids
+    }
+
     private var totalCount: Int {
-        viewModel.wordDataService.categories.count
+        allSelectableCategoryIds.count
     }
 
     private var selectedCount: Int {
-        viewModel.settings.selectedCategoryIds.count
+        // Only count currently selectable categories (ignore stale "custom" if no words)
+        viewModel.settings.selectedCategoryIds.intersection(allSelectableCategoryIds).count
     }
 
     private var noneSelected: Bool {
-        viewModel.settings.selectedCategoryIds.isEmpty
+        selectedCount == 0
     }
 
     private var allSelected: Bool {
-        selectedCount == totalCount
+        !allSelectableCategoryIds.isEmpty && allSelectableCategoryIds.isSubset(of: viewModel.settings.selectedCategoryIds)
+    }
+
+    private var isCustomCategorySelected: Bool {
+        viewModel.settings.selectedCategoryIds.contains(CustomWordService.customCategoryId)
     }
 
     private func isCategorySelected(_ categoryId: String) -> Bool {
@@ -120,6 +150,16 @@ struct CategoryPickerView: View {
     private func initializeCategoriesIfNeeded() {
         let allIds = Set(viewModel.wordDataService.categories.map { $0.id })
         viewModel.settings.initializeCategoriesIfNeeded(allIds: allIds)
+    }
+
+    /// Drop "custom" from selection when the user has no custom words left
+    private func pruneStaleCustomSelection() {
+        let customId = CustomWordService.customCategoryId
+        guard !viewModel.customWordService.hasWords,
+              viewModel.settings.selectedCategoryIds.contains(customId) else { return }
+        var ids = viewModel.settings.selectedCategoryIds
+        ids.remove(customId)
+        viewModel.settings.selectedCategoryIds = ids
     }
 }
 
@@ -158,10 +198,50 @@ struct CategoryChip: View {
             )
         }
         .buttonStyle(.bounce)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
     private var categoryColor: Color {
         Color.forCategory(category.id)
+    }
+}
+
+/// Custom words category chip with distinct styling
+struct CustomCategoryChip: View {
+    let wordCount: Int
+    let isSelected: Bool
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            VStack(spacing: 6) {
+                Image(systemName: "heart.text.square")
+                    .font(.title3)
+
+                Text("My Words")
+                    .font(.caption2)
+                    .fontWeight(.medium)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+            .foregroundStyle(isSelected ? .white : .white.opacity(0.4))
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .padding(.horizontal, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(isSelected ? Color.pink.opacity(0.25) : Color.white.opacity(0.03))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(
+                                isSelected ? Color.pink.opacity(0.6) : Color.white.opacity(0.08),
+                                lineWidth: 1
+                            )
+                    )
+            )
+        }
+        .buttonStyle(.bounce)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 

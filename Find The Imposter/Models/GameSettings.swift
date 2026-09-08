@@ -10,7 +10,7 @@ import SwiftUI
 /// Persisted game settings using UserDefaults with in-memory backing for SwiftUI reactivity
 @Observable
 class GameSettings {
-    private let defaults = UserDefaults.standard
+    private let defaults: UserDefaults
 
     // MARK: - Hint Mode Enum
 
@@ -43,16 +43,19 @@ class GameSettings {
     private var _hintMode: HintMode
     private var _soundEnabled: Bool
     private var _hapticsEnabled: Bool
+    private var _hasSeenOnboarding: Bool
 
     // MARK: - Initialization
 
-    init() {
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
         // Load from UserDefaults into in-memory storage
-        _selectedDifficulties = Self.loadDifficulties(from: UserDefaults.standard)
-        _selectedCategoryIds = Self.loadCategoryIds(from: UserDefaults.standard)
-        _hintMode = Self.loadHintMode(from: UserDefaults.standard)
-        _soundEnabled = UserDefaults.standard.object(forKey: "soundEnabled") as? Bool ?? true
-        _hapticsEnabled = UserDefaults.standard.object(forKey: "hapticsEnabled") as? Bool ?? true
+        _selectedDifficulties = Self.loadDifficulties(from: defaults)
+        _selectedCategoryIds = Self.loadCategoryIds(from: defaults)
+        _hintMode = Self.loadHintMode(from: defaults)
+        _soundEnabled = defaults.object(forKey: "soundEnabled") as? Bool ?? true
+        _hapticsEnabled = defaults.object(forKey: "hapticsEnabled") as? Bool ?? true
+        _hasSeenOnboarding = defaults.bool(forKey: "hasSeenOnboarding")
     }
 
     // MARK: - Game Settings Properties
@@ -96,6 +99,14 @@ class GameSettings {
         set {
             _hapticsEnabled = newValue
             defaults.set(newValue, forKey: "hapticsEnabled")
+        }
+    }
+
+    var hasSeenOnboarding: Bool {
+        get { _hasSeenOnboarding }
+        set {
+            _hasSeenOnboarding = newValue
+            defaults.set(newValue, forKey: "hasSeenOnboarding")
         }
     }
 

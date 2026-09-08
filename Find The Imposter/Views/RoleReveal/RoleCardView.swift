@@ -13,6 +13,10 @@ struct RoleCardView: View {
     let word: String
     let categoryName: String
     let showHint: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @ScaledMetric(relativeTo: .largeTitle) private var roleIconSize: CGFloat = 70
+    @ScaledMetric(relativeTo: .title) private var secretWordSize: CGFloat = 32
+
 
     @State private var hasAppeared = false
 
@@ -37,66 +41,79 @@ struct RoleCardView: View {
             }
             .mask(RoundedRectangle(cornerRadius: Constants.cardCornerRadius))
 
-            // Content
-            VStack(spacing: 24) {
-                Spacer()
+            // Keep the role summary first and allow all details to remain reachable.
+            ScrollView(.vertical) {
+                VStack(spacing: 20) {
+                    // Role Text
+                    VStack(spacing: 8) {
+                        Text("You are")
+                            .font(.title3)
+                            .foregroundStyle(.white.opacity(0.8))
 
-                // Role Icon
-                ZStack {
-                    // Glow
-                    Circle()
-                        .fill(iconGlowColor)
-                        .frame(width: 140, height: 140)
-                        .blur(radius: 30)
-
-                    Image(systemName: roleIcon)
-                        .font(.system(size: 70))
-                        .foregroundStyle(iconColor)
-                        .scaleEffect(hasAppeared ? 1.0 : 0.5)
-                        .opacity(hasAppeared ? 1.0 : 0.0)
-                }
-
-                // Role Text
-                VStack(spacing: 8) {
-                    Text(isImposter ? "You are" : "You are")
-                        .font(.title3)
-                        .foregroundStyle(.white.opacity(0.8))
-
-                    Text(isImposter ? "THE IMPOSTER" : "NOT the Imposter")
-                        .font(.title)
-                        .fontWeight(.heavy)
-                        .foregroundStyle(textColor)
-                        .multilineTextAlignment(.center)
-                }
-                .scaleEffect(hasAppeared ? 1.0 : 0.8)
-                .opacity(hasAppeared ? 1.0 : 0.0)
-
-                Spacer()
-
-                // Word or Hint Section
-                VStack(spacing: 12) {
-                    if isImposter {
-                        imposterContent
-                    } else {
-                        nonImposterContent
+                        Text(isImposter ? "THE IMPOSTER" : "NOT the Imposter")
+                            .font(.title)
+                            .fontWeight(.heavy)
+                            .foregroundStyle(textColor)
+                            .multilineTextAlignment(.center)
                     }
-                }
-                .padding(.horizontal, 20)
-                .scaleEffect(hasAppeared ? 1.0 : 0.8)
-                .opacity(hasAppeared ? 1.0 : 0.0)
+                    .scaleEffect(hasAppeared ? 1.0 : 0.8)
+                    .opacity(hasAppeared ? 1.0 : 0.0)
 
-                Spacer()
+                    // Role Icon
+                    ZStack {
+                        Circle()
+                            .fill(iconGlowColor)
+                            .frame(width: iconGlowSize, height: iconGlowSize)
+                            .blur(radius: 30)
+
+                        Image(systemName: roleIcon)
+                            .font(.system(size: cappedRoleIconSize))
+                            .foregroundStyle(iconColor)
+                            .scaleEffect(hasAppeared ? 1.0 : 0.5)
+                            .opacity(hasAppeared ? 1.0 : 0.0)
+                    }
+
+                    // Word or Hint Section
+                    VStack(spacing: 12) {
+                        if isImposter {
+                            imposterContent
+                        } else {
+                            nonImposterContent
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .scaleEffect(hasAppeared ? 1.0 : 0.8)
+                    .opacity(hasAppeared ? 1.0 : 0.0)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 24)
             }
-            .padding(.vertical, 30)
+            .scrollIndicators(.hidden)
 
             // Border
             RoundedRectangle(cornerRadius: Constants.cardCornerRadius)
                 .strokeBorder(borderGradient, lineWidth: 3)
+                .allowsHitTesting(false)
         }
+        .clipShape(RoundedRectangle(cornerRadius: Constants.cardCornerRadius))
         .onAppear {
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.7).delay(0.1)) {
+            revealContent()
+        }
+        .onChange(of: reduceMotion) { _, shouldReduceMotion in
+            if shouldReduceMotion {
                 hasAppeared = true
             }
+        }
+    }
+
+    private func revealContent() {
+        guard !reduceMotion else {
+            hasAppeared = true
+            return
+        }
+
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.7).delay(0.1)) {
+            hasAppeared = true
         }
     }
 
@@ -154,11 +171,11 @@ struct RoleCardView: View {
                 .foregroundStyle(.white.opacity(0.7))
 
             Text(word)
-                .font(.system(size: 32, weight: .heavy))
+                .font(.system(size: cappedSecretWordSize, weight: .heavy))
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
-                .minimumScaleFactor(0.6)
+                .minimumScaleFactor(0.5)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
@@ -171,11 +188,25 @@ struct RoleCardView: View {
                         )
                 )
 
-            Text(categoryName)
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.5))
-                .padding(.top, 4)
+            if !categoryName.isEmpty {
+                Text(categoryName)
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.5))
+                    .padding(.top, 4)
+            }
         }
+    }
+
+    private var cappedRoleIconSize: CGFloat {
+        min(roleIconSize, 96)
+    }
+
+    private var iconGlowSize: CGFloat {
+        min(cappedRoleIconSize * 2, 168)
+    }
+
+    private var cappedSecretWordSize: CGFloat {
+        min(secretWordSize, 44)
     }
 
     // MARK: - Styling Properties

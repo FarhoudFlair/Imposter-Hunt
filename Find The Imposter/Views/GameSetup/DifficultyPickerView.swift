@@ -94,6 +94,7 @@ struct DifficultyChip: View {
             )
         }
         .buttonStyle(.bounce)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
     private var chipColor: Color {
